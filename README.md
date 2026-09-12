@@ -1,4 +1,4 @@
-# MUSHAK DASH
+# MUSHAK DASH GAME
 ### A Vinayaka Chaturthi Festival Adventure
 
 A complete, polished, and respectful 2D arcade runner game developed for the **Student Game Design Contest** celebrating **Vinayaka Chaturthi / Ganesh Chaturthi**.
