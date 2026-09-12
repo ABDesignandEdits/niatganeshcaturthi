@@ -1,0 +1,67 @@
+@import "tailwindcss";
+
+@layer utilities {
+  .font-cinzel {
+    font-family: 'Cinzel', serif, system-ui;
+  }
+  .font-rozha {
+    font-family: 'Rozha One', serif, system-ui;
+  }
+  .font-outfit {
+    font-family: 'Outfit', sans-serif, system-ui;
+  }
+}
+
+/* Custom festive glow and animation effects */
+@keyframes diyaGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.6), 0 0 30px rgba(245, 158, 11, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 25px rgba(251, 191, 36, 0.9), 0 0 45px rgba(245, 158, 11, 0.5);
+  }
+}
+
+@keyframes floatSoft {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.animate-diya-glow {
+  animation: diyaGlow 2.5s infinite ease-in-out;
+}
+
+.animate-float {
+  animation: floatSoft 3s infinite ease-in-out;
+}
+
+/* Glassmorphism panel styling */
+.festival-glass {
+  background: rgba(45, 18, 5, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(245, 158, 11, 0.3);
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(254, 243, 199, 0.15);
+}
+
+.festival-button {
+  background: linear-gradient(135deg, #d97706 0%, #b45309 50%, #78350f 100%);
+  border: 1px solid rgba(251, 191, 36, 0.5);
+  color: #fef3c7;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.35);
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.festival-button:hover {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #92400e 100%);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+  transform: translateY(-2px);
+}
+
+.festival-button:active {
+  transform: translateY(1px);
+}

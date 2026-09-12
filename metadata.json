@@ -1,0 +1,6 @@
+{
+  "name": "Mushak Dash",
+  "description": "A Vinayaka Chaturthi Festival Adventure 2D runner game celebrating Lord Ganesha with Mushak",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
