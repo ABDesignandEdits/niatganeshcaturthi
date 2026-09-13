@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Play, Trophy, BookOpen, Settings, Info, Sparkles } from 'lucide-react';
 import { soundManager } from '../audio/soundManager';
 import { MousePreviewCanvas } from './MousePreviewCanvas';
@@ -128,6 +128,17 @@ export const MainMenu: React.FC<MainMenuProps> = ({
     };
   }, []);
 
+  const [previewSize, setPreviewSize] = useState(130);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setPreviewSize(window.innerWidth < 640 ? 95 : 130);
+    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
   const handleStartPlay = () => {
     soundManager.userInteracted();
     soundManager.playPowerUp();
@@ -135,80 +146,80 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden flex flex-col justify-between items-center bg-gradient-to-b from-amber-950 via-red-950 to-stone-950 text-amber-50">
+    <div className="relative w-full min-h-screen min-h-[100dvh] overflow-y-auto overflow-x-hidden flex flex-col justify-between items-center bg-gradient-to-b from-amber-950 via-red-950 to-stone-950 text-amber-50 py-2 sm:py-5 px-3 sm:px-6">
       {/* Background canvas for ambient festive particles */}
       <canvas ref={canvasRef} className="absolute inset-0 pointer-events-none z-0" />
 
       {/* Top Header Bar */}
-      <header className="relative z-10 w-full max-w-6xl px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <span className="text-xl">🪔</span>
-          <span className="font-cinzel text-xs md:text-sm tracking-widest text-amber-300 font-semibold uppercase">
+      <header className="relative z-10 w-full max-w-5xl px-2 sm:px-6 py-2 sm:py-4 flex items-center justify-between">
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <span className="text-lg sm:text-xl">🪔</span>
+          <span className="font-cinzel text-[11px] sm:text-xs md:text-sm tracking-wider sm:tracking-widest text-amber-300 font-semibold uppercase">
             Vinayaka Chaturthi Special
           </span>
         </div>
 
         {highScore > 0 && (
-          <div className="flex items-center gap-2 festival-glass px-4 py-1.5 rounded-full border border-amber-500/30">
-            <Trophy className="w-4 h-4 text-amber-400" />
-            <span className="text-xs uppercase tracking-wider text-amber-200">High Score:</span>
-            <span className="font-outfit font-bold text-amber-400">{highScore.toLocaleString()}</span>
+          <div className="flex items-center gap-1.5 sm:gap-2 festival-glass px-2.5 sm:px-4 py-1 sm:py-1.5 rounded-full border border-amber-500/30">
+            <Trophy className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-amber-400" />
+            <span className="text-[10px] sm:text-xs uppercase tracking-wider text-amber-200">Best:</span>
+            <span className="font-outfit font-bold text-xs sm:text-sm text-amber-400">{highScore.toLocaleString()}</span>
           </div>
         )}
       </header>
 
       {/* Main Center Content */}
-      <main className="relative z-10 flex flex-col items-center text-center px-4 max-w-2xl my-auto">
+      <main className="relative z-10 flex flex-col items-center text-center px-2 sm:px-4 max-w-xl my-auto py-2">
         {/* Auspicious Symbol */}
-        <div className="inline-flex items-center justify-center w-14 h-14 rounded-full bg-amber-500/10 border border-amber-400/30 mb-3 shadow-lg shadow-amber-500/20">
-          <span className="text-2xl text-amber-300 font-serif">ॐ</span>
+        <div className="inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-amber-500/15 border border-amber-400/40 mb-1.5 sm:mb-2 shadow-md shadow-amber-500/20">
+          <span className="text-xl sm:text-2xl text-amber-300 font-serif">ॐ</span>
         </div>
 
         {/* Title */}
-        <h1 className="font-cinzel text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 drop-shadow-md">
+        <h1 className="font-cinzel text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-transparent bg-clip-text bg-gradient-to-r from-amber-200 via-amber-400 to-orange-400 drop-shadow-md">
           MUSHAK DASH
         </h1>
 
         {/* Subtitle */}
-        <p className="font-rozha text-lg sm:text-2xl text-amber-200/90 mt-2 tracking-wide">
+        <p className="font-rozha text-sm sm:text-lg md:text-xl text-amber-200/90 mt-1 tracking-wide">
           A Vinayaka Chaturthi Festival Adventure
         </p>
 
-        <p className="text-xs sm:text-sm text-amber-100/70 max-w-md mt-2 leading-relaxed">
+        <p className="text-[11px] sm:text-xs md:text-sm text-amber-100/75 max-w-md mt-1 sm:mt-1.5 leading-snug">
           Guide Mushak across illuminated festival streets, collect sacred modaks, celebrate with eco-friendly devotion, and reach the grand Visarjan celebration!
         </p>
 
-        {/* Animated Mushak 3D Preview (Matching user reference photo 1) */}
-        <div className="relative my-5 flex items-center justify-center">
-          <div className="w-32 h-32 sm:w-36 sm:h-36 rounded-full bg-gradient-to-tr from-amber-950/80 via-stone-900/90 to-amber-900/80 border-2 border-amber-400/60 flex items-center justify-center p-1 shadow-2xl shadow-amber-500/20 overflow-hidden animate-diya-glow">
-            <MousePreviewCanvas size={135} />
+        {/* Animated Mushak 3D Preview */}
+        <div className="relative my-3 sm:my-4 flex items-center justify-center">
+          <div className="w-24 h-24 sm:w-32 sm:h-32 rounded-full bg-gradient-to-tr from-amber-950/80 via-stone-900/90 to-amber-900/80 border-2 border-amber-400/60 flex items-center justify-center p-0.5 shadow-2xl shadow-amber-500/20 overflow-hidden animate-diya-glow">
+            <MousePreviewCanvas size={previewSize} />
           </div>
-          <span className="absolute -bottom-2 px-3 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-[10px] font-bold tracking-widest text-amber-300 uppercase backdrop-blur-sm">
+          <span className="absolute -bottom-2 px-2.5 py-0.5 rounded-full bg-amber-500/20 border border-amber-400/40 text-[9px] sm:text-[10px] font-bold tracking-widest text-amber-300 uppercase backdrop-blur-sm">
             3D Mushak
           </span>
         </div>
 
         {/* Primary Action Buttons */}
-        <div className="flex flex-col sm:flex-row items-center gap-3 w-full max-w-md">
+        <div className="flex flex-col items-center gap-2.5 w-full max-w-sm sm:max-w-md mt-1">
           <button
             id="play-button"
             onClick={handleStartPlay}
-            className="festival-button w-full py-3.5 px-6 rounded-xl font-outfit font-bold text-lg flex items-center justify-center gap-2 cursor-pointer transition-transform transform active:scale-95"
+            className="festival-button w-full min-h-[48px] py-3 px-6 rounded-xl font-outfit font-bold text-base sm:text-lg flex items-center justify-center gap-2 cursor-pointer transition-transform transform active:scale-95 shadow-lg shadow-amber-500/25"
           >
             <Play className="w-5 h-5 fill-current" />
             <span>PLAY ADVENTURE</span>
           </button>
         </div>
 
-        {/* Secondary Menu Buttons */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 w-full max-w-md mt-3">
+        {/* Secondary Menu Buttons - All 4 clearly visible and easily tap-friendly on mobile */}
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 sm:gap-2.5 w-full max-w-sm sm:max-w-md mt-2.5 sm:mt-3">
           <button
             id="leaderboard-button"
             onClick={() => {
               soundManager.userInteracted();
               onOpenLeaderboard();
             }}
-            className="festival-glass hover:bg-amber-900/40 p-2.5 rounded-lg border border-amber-500/25 text-amber-200 hover:text-amber-100 flex flex-col items-center gap-1 text-xs font-semibold cursor-pointer transition-all"
+            className="festival-glass hover:bg-amber-900/50 active:bg-amber-800/60 p-2 sm:p-2.5 min-h-[44px] rounded-lg border border-amber-500/30 text-amber-200 hover:text-amber-100 flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs font-semibold cursor-pointer transition-all active:scale-95"
           >
             <Trophy className="w-4 h-4 text-amber-400" />
             <span>LEADERBOARD</span>
@@ -220,7 +231,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               soundManager.userInteracted();
               onOpenHowToPlay();
             }}
-            className="festival-glass hover:bg-amber-900/40 p-2.5 rounded-lg border border-amber-500/25 text-amber-200 hover:text-amber-100 flex flex-col items-center gap-1 text-xs font-semibold cursor-pointer transition-all"
+            className="festival-glass hover:bg-amber-900/50 active:bg-amber-800/60 p-2 sm:p-2.5 min-h-[44px] rounded-lg border border-amber-500/30 text-amber-200 hover:text-amber-100 flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs font-semibold cursor-pointer transition-all active:scale-95"
           >
             <BookOpen className="w-4 h-4 text-amber-400" />
             <span>HOW TO PLAY</span>
@@ -232,7 +243,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               soundManager.userInteracted();
               onOpenSettings();
             }}
-            className="festival-glass hover:bg-amber-900/40 p-2.5 rounded-lg border border-amber-500/25 text-amber-200 hover:text-amber-100 flex flex-col items-center gap-1 text-xs font-semibold cursor-pointer transition-all"
+            className="festival-glass hover:bg-amber-900/50 active:bg-amber-800/60 p-2 sm:p-2.5 min-h-[44px] rounded-lg border border-amber-500/30 text-amber-200 hover:text-amber-100 flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs font-semibold cursor-pointer transition-all active:scale-95"
           >
             <Settings className="w-4 h-4 text-amber-400" />
             <span>SETTINGS</span>
@@ -244,7 +255,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
               soundManager.userInteracted();
               onOpenAbout();
             }}
-            className="festival-glass hover:bg-amber-900/40 p-2.5 rounded-lg border border-amber-500/25 text-amber-200 hover:text-amber-100 flex flex-col items-center gap-1 text-xs font-semibold cursor-pointer transition-all"
+            className="festival-glass hover:bg-amber-900/50 active:bg-amber-800/60 p-2 sm:p-2.5 min-h-[44px] rounded-lg border border-amber-500/30 text-amber-200 hover:text-amber-100 flex flex-col items-center justify-center gap-1 text-[11px] sm:text-xs font-semibold cursor-pointer transition-all active:scale-95"
           >
             <Info className="w-4 h-4 text-amber-400" />
             <span>ABOUT</span>
@@ -253,7 +264,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
       </main>
 
       {/* Footer Banner */}
-      <footer className="relative z-10 w-full px-4 py-3 text-center border-t border-amber-900/40 bg-amber-950/40">
+      <footer className="relative z-10 w-full px-4 py-2 sm:py-3 text-center border-t border-amber-900/40 bg-amber-950/40 mt-3 sm:mt-4">
         <div className="flex items-center justify-center gap-2 text-xs text-amber-300/80 font-medium">
           <Sparkles className="w-3.5 h-3.5 text-amber-400" />
           <span>Student Game Design Contest Edition • Ganpati Bappa Morya!</span>

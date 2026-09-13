@@ -11,32 +11,32 @@ export const LeaderboardModal: React.FC<LeaderboardModalProps> = ({ onClose }) =
   const entries = getLeaderboard();
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-lg festival-glass rounded-2xl p-6 border border-amber-500/40 text-amber-50 shadow-2xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-lg my-auto festival-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/40 text-amber-50 shadow-2xl max-h-[92vh] max-h-[92dvh] flex flex-col overflow-hidden">
         {/* Close Button */}
         <button
           id="close-leaderboard-btn"
           onClick={onClose}
-          className="absolute top-4 right-4 text-amber-400 hover:text-amber-200 p-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-900/40 cursor-pointer"
+          className="absolute top-3 sm:top-4 right-3 sm:right-4 text-amber-400 hover:text-amber-200 p-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-900/40 cursor-pointer z-10"
         >
           <X className="w-5 h-5" />
         </button>
 
         {/* Header */}
-        <div className="text-center mb-5">
-          <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-amber-500/20 border border-amber-400/40 mb-2">
-            <Trophy className="w-6 h-6 text-amber-400" />
+        <div className="text-center mb-4 shrink-0">
+          <div className="inline-flex items-center justify-center w-11 h-11 rounded-full bg-amber-500/20 border border-amber-400/40 mb-1.5">
+            <Trophy className="w-5 h-5 text-amber-400" />
           </div>
-          <h2 className="font-cinzel text-2xl font-bold text-amber-300">
+          <h2 className="font-cinzel text-xl sm:text-2xl font-bold text-amber-300">
             Festival Leaderboard
           </h2>
-          <p className="text-xs text-amber-200/80 mt-0.5 font-rozha">
+          <p className="text-[11px] sm:text-xs text-amber-200/80 mt-0.5 font-rozha">
             Student Game Design Contest High Scorers
           </p>
         </div>
 
         {/* Table of Entries */}
-        <div className="flex flex-col gap-2 max-h-[50vh] overflow-y-auto pr-1">
+        <div className="flex flex-col gap-2 flex-1 overflow-y-auto pr-1">
           {entries.map((entry, index) => {
             const isTop3 = index < 3;
             let rankBadge = (

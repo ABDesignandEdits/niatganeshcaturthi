@@ -30,8 +30,8 @@ export const QuizModal: React.FC<QuizModalProps> = ({ question, onComplete }) =>
   const isCorrect = selectedIdx === question.correctIndex;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-lg festival-glass rounded-2xl p-6 border border-amber-500/40 text-amber-50 shadow-2xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-lg my-auto festival-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/40 text-amber-50 shadow-2xl max-h-[92vh] max-h-[92dvh] overflow-y-auto">
         {/* Header */}
         <div className="text-center mb-4">
           <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 border border-amber-400/30 text-amber-300 text-xs font-bold uppercase tracking-wider mb-2">

@@ -42,13 +42,13 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({ onClose }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-md festival-glass rounded-2xl p-6 border border-amber-500/40 text-amber-50 shadow-2xl">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-md my-auto festival-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/40 text-amber-50 shadow-2xl max-h-[92vh] max-h-[92dvh] overflow-y-auto">
         {/* Close Button */}
         <button
           id="close-settings-btn"
           onClick={onClose}
-          className="absolute top-4 right-4 text-amber-400 hover:text-amber-200 p-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-900/40 cursor-pointer"
+          className="absolute top-3 sm:top-4 right-3 sm:right-4 text-amber-400 hover:text-amber-200 p-1.5 rounded-lg border border-amber-500/20 hover:bg-amber-900/40 cursor-pointer"
         >
           <X className="w-5 h-5" />
         </button>

@@ -39,8 +39,8 @@ export const VictoryModal: React.FC<VictoryModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/90 backdrop-blur-lg animate-in fade-in overflow-y-auto">
-      <div className="relative w-full max-w-lg festival-glass rounded-2xl p-6 sm:p-7 border-2 border-amber-400/60 text-amber-50 shadow-2xl text-center my-8">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4 bg-black/90 backdrop-blur-lg animate-in fade-in">
+      <div className="relative w-full max-w-lg my-auto festival-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 border-2 border-amber-400/60 text-amber-50 shadow-2xl text-center max-h-[92vh] max-h-[92dvh] overflow-y-auto">
         {/* Sacred Aarti Kalash & Ganesha Blessing Emblem */}
         <div className="relative inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-tr from-amber-600/40 to-yellow-400/30 border-2 border-amber-300 mb-3 animate-diya-glow">
           <span className="text-4xl animate-float">🪔</span>

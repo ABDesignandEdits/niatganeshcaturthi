@@ -17,6 +17,8 @@ export class GameRenderer {
   private cloudOffsets = [40, 240, 520, 800];
   private kandeelOffsets = [120, 360, 600, 840, 1080];
 
+  private skyGradCache: Map<string, CanvasGradient> = new Map();
+
   constructor(ctx: CanvasRenderingContext2D, width: number, height: number) {
     this.ctx = ctx;
     this.width = width;
@@ -26,6 +28,7 @@ export class GameRenderer {
   public resize(width: number, height: number) {
     this.width = width;
     this.height = height;
+    this.skyGradCache.clear();
   }
 
   // --- Background Drawing based on Stage Atmosphere ---
@@ -34,38 +37,43 @@ export class GameRenderer {
     const w = this.width;
     const h = this.height;
 
-    // 1. Sky & Atmosphere Gradient
-    const skyGrad = ctx.createLinearGradient(0, 0, 0, h);
-    if (stage.bgAtmosphere === 'day') {
-      // Stage 1: Bright golden morning in festival street
-      skyGrad.addColorStop(0, '#fef08a'); // soft morning gold
-      skyGrad.addColorStop(0.4, '#fed7aa'); // peach
-      skyGrad.addColorStop(0.75, '#fb923c'); // warm saffron
-      skyGrad.addColorStop(1, '#9a3412');
-    } else if (stage.bgAtmosphere === 'evening') {
-      // Stage 2: Rich twilight with Rangoli glow
-      skyGrad.addColorStop(0, '#312e81'); // deep indigo
-      skyGrad.addColorStop(0.35, '#581c87'); // royal purple
-      skyGrad.addColorStop(0.7, '#9d174d'); // magenta
-      skyGrad.addColorStop(1, '#7c2d12'); // warm glow
-    } else if (stage.bgAtmosphere === 'pandal') {
-      // Stage 3: Inside Grand Pandal - crimson fabrics & chandeliers
-      skyGrad.addColorStop(0, '#450a0a'); // deep crimson
-      skyGrad.addColorStop(0.3, '#7f1d1d');
-      skyGrad.addColorStop(0.7, '#b45309'); // rich golden amber
-      skyGrad.addColorStop(1, '#78350f');
-    } else if (stage.bgAtmosphere === 'green') {
-      // Stage 4: Eco-Friendly - clean lush green & morning sunlight
-      skyGrad.addColorStop(0, '#bae6fd'); // fresh clear sky
-      skyGrad.addColorStop(0.4, '#bbf7d0'); // fresh pale mint
-      skyGrad.addColorStop(0.75, '#86efac'); // soft green
-      skyGrad.addColorStop(1, '#15803d'); // deep forest
-    } else {
-      // Stage 5: Visarjan Twilight - holy river reflection & starry night
-      skyGrad.addColorStop(0, '#0f172a'); // midnight blue
-      skyGrad.addColorStop(0.4, '#1e1b4b'); // deep twilight
-      skyGrad.addColorStop(0.7, '#4c1d95'); // royal violet
-      skyGrad.addColorStop(1, '#831843'); // sunset river glow
+    // 1. Sky & Atmosphere Gradient (cached for zero CPU allocation overhead)
+    const cacheKey = `${stage.bgAtmosphere}_${h}`;
+    let skyGrad = this.skyGradCache.get(cacheKey);
+    if (!skyGrad) {
+      skyGrad = ctx.createLinearGradient(0, 0, 0, h);
+      if (stage.bgAtmosphere === 'day') {
+        // Stage 1: Bright golden morning in festival street
+        skyGrad.addColorStop(0, '#fef08a'); // soft morning gold
+        skyGrad.addColorStop(0.4, '#fed7aa'); // peach
+        skyGrad.addColorStop(0.75, '#fb923c'); // warm saffron
+        skyGrad.addColorStop(1, '#9a3412');
+      } else if (stage.bgAtmosphere === 'evening') {
+        // Stage 2: Rich twilight with Rangoli glow
+        skyGrad.addColorStop(0, '#312e81'); // deep indigo
+        skyGrad.addColorStop(0.35, '#581c87'); // royal purple
+        skyGrad.addColorStop(0.7, '#9d174d'); // magenta
+        skyGrad.addColorStop(1, '#7c2d12'); // warm glow
+      } else if (stage.bgAtmosphere === 'pandal') {
+        // Stage 3: Inside Grand Pandal - crimson fabrics & chandeliers
+        skyGrad.addColorStop(0, '#450a0a'); // deep crimson
+        skyGrad.addColorStop(0.3, '#7f1d1d');
+        skyGrad.addColorStop(0.7, '#b45309'); // rich golden amber
+        skyGrad.addColorStop(1, '#78350f');
+      } else if (stage.bgAtmosphere === 'green') {
+        // Stage 4: Eco-Friendly - clean lush green & morning sunlight
+        skyGrad.addColorStop(0, '#bae6fd'); // fresh clear sky
+        skyGrad.addColorStop(0.4, '#bbf7d0'); // fresh pale mint
+        skyGrad.addColorStop(0.75, '#86efac'); // soft green
+        skyGrad.addColorStop(1, '#15803d'); // deep forest
+      } else {
+        // Stage 5: Visarjan Twilight - holy river reflection & starry night
+        skyGrad.addColorStop(0, '#0f172a'); // midnight blue
+        skyGrad.addColorStop(0.4, '#1e1b4b'); // deep twilight
+        skyGrad.addColorStop(0.7, '#4c1d95'); // royal violet
+        skyGrad.addColorStop(1, '#831843'); // sunset river glow
+      }
+      this.skyGradCache.set(cacheKey, skyGrad);
     }
 
     ctx.fillStyle = skyGrad;

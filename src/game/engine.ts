@@ -14,6 +14,7 @@ import { STAGES, COLLECTIBLE_VALUES, GOAL_DISTANCE_METRES } from './constants';
 import { soundManager } from '../audio/soundManager';
 import {
   saveHighScore,
+  getHighScore,
   saveBestEcoScore,
   saveMaxComboRecord,
   saveUnlockedStage,
@@ -83,6 +84,13 @@ export class GameEngine {
   private spawnTimer = 0;
   private callbacks: GameCallbacks;
 
+  // State deduplication and throttling to guarantee zero React re-render lag
+  private lastNotifiedDistance = -1;
+  private progressThrottleTimer = 0;
+  private lastWarningState: 'jump' | 'slide' | null = null;
+  private lastPowerUpSignature = '';
+  private cachedHighScore = 0;
+
   // Input states
   private keysPressed: Record<string, boolean> = {};
 
@@ -101,6 +109,7 @@ export class GameEngine {
     this.ecoScore = initialEcoScore;
     this.maxCombo = initialMaxCombo;
     this.callbacks = callbacks;
+    this.cachedHighScore = getHighScore();
 
     this.player = this.createDefaultPlayer();
     this.setupInputs();
@@ -192,6 +201,22 @@ export class GameEngine {
       soundManager.playSlide();
       this.spawnDustParticles(this.player.x + 10, this.groundY, 8, '#f59e0b');
     }
+  }
+
+  public steerLeft(active: boolean) {
+    this.keysPressed['ArrowLeft'] = active;
+  }
+
+  public steerRight(active: boolean) {
+    this.keysPressed['ArrowRight'] = active;
+  }
+
+  public nudgeLeft(amount = 45) {
+    this.player.x = Math.max(60, this.player.x - amount);
+  }
+
+  public nudgeRight(amount = 45) {
+    this.player.x = Math.min(280, this.player.x + amount);
   }
 
   public startStage(stageIndex: number) {
@@ -374,7 +399,14 @@ export class GameEngine {
     this.cameraX += currentSpeed * (dt * 60);
 
     const progress = Math.min(1, this.distance / targetDistance);
-    this.callbacks.onStageProgress(progress, Math.floor(this.distance), targetDistance);
+    const currentDistInt = Math.floor(this.distance);
+    this.progressThrottleTimer += dt;
+    // Notify React only when meter changes or at clean 150ms intervals to eliminate lag
+    if (currentDistInt !== this.lastNotifiedDistance || this.progressThrottleTimer >= 0.15) {
+      this.lastNotifiedDistance = currentDistInt;
+      this.progressThrottleTimer = 0;
+      this.callbacks.onStageProgress(progress, currentDistInt, targetDistance);
+    }
 
     // Approaching Lord Ganesha (last 10 metres: e.g. 20m - 30m)
     const approachStart = Math.max(15, targetDistance - 10);
@@ -505,12 +537,16 @@ export class GameEngine {
     if (p.trailTimer > 0) p.trailTimer -= dt;
 
     const activeList: { type: PowerUpType; timeLeft: number }[] = [];
-    if (p.divineBlessingTimer > 0) activeList.push({ type: 'blessing', timeLeft: p.divineBlessingTimer });
-    if (p.magnetTimer > 0) activeList.push({ type: 'magnet', timeLeft: p.magnetTimer });
-    if (p.boostTimer > 0) activeList.push({ type: 'boost', timeLeft: p.boostTimer });
-    if (p.trailTimer > 0) activeList.push({ type: 'trail', timeLeft: p.trailTimer });
+    if (p.divineBlessingTimer > 0) activeList.push({ type: 'blessing', timeLeft: Math.ceil(p.divineBlessingTimer) });
+    if (p.magnetTimer > 0) activeList.push({ type: 'magnet', timeLeft: Math.ceil(p.magnetTimer) });
+    if (p.boostTimer > 0) activeList.push({ type: 'boost', timeLeft: Math.ceil(p.boostTimer) });
+    if (p.trailTimer > 0) activeList.push({ type: 'trail', timeLeft: Math.ceil(p.trailTimer) });
 
-    this.callbacks.onPowerUpUpdate(activeList);
+    const signature = activeList.map(a => `${a.type}:${a.timeLeft}`).join('|');
+    if (signature !== this.lastPowerUpSignature) {
+      this.lastPowerUpSignature = signature;
+      this.callbacks.onPowerUpUpdate(activeList);
+    }
   }
 
   private spawnEntities(stage: StageConfig) {
@@ -852,7 +888,10 @@ export class GameEngine {
 
   private addScore(pts: number, text: string, color = '#fef3c7') {
     this.score += pts;
-    saveHighScore(this.score);
+    if (this.score > this.cachedHighScore) {
+      this.cachedHighScore = this.score;
+      saveHighScore(this.score);
+    }
     this.callbacks.onScoreUpdate(this.score, this.ecoScore, this.combo);
 
     this.floatingTexts.push({
@@ -906,8 +945,11 @@ export class GameEngine {
         break;
       }
     }
-    this.approachingWarning = warning;
-    this.callbacks.onObstacleWarning?.(warning);
+    if (warning !== this.lastWarningState) {
+      this.lastWarningState = warning;
+      this.approachingWarning = warning;
+      this.callbacks.onObstacleWarning?.(warning);
+    }
 
     for (let i = this.obstacles.length - 1; i >= 0; i--) {
       const obs = this.obstacles[i];
@@ -1039,6 +1081,9 @@ export class GameEngine {
   }
 
   private updateParticles(dt: number) {
+    if (this.particles.length > 50) {
+      this.particles.splice(0, this.particles.length - 50);
+    }
     for (let i = this.particles.length - 1; i >= 0; i--) {
       const p = this.particles[i];
       p.x += p.vx * (dt * 60);

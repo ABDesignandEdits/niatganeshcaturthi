@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Heart, Pause, Play, Volume2, VolumeX, Leaf, Flame, Sparkles } from 'lucide-react';
+import { Heart, Pause, Play, Volume2, VolumeX, Leaf, Flame, Sparkles, Gamepad2 } from 'lucide-react';
 import { GameEngine } from '../game/engine';
 import { GameRenderer } from '../game/renderer';
 import { STAGES } from '../game/constants';
@@ -49,11 +49,12 @@ export const GameView: React.FC<GameViewProps> = ({
   const [soundEnabled, setSoundEnabled] = useState(soundManager.settings.soundEnabled);
   const [activePowerUps, setActivePowerUps] = useState<{ type: PowerUpType; timeLeft: number }[]>([]);
   const [colorSequence, setColorSequence] = useState<{ colors: RangoliColor[]; currentIdx: number } | null>(null);
+  const [showTouchControls, setShowTouchControls] = useState(() => {
+    if (typeof window === 'undefined') return true;
+    return ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || window.innerWidth <= 1024;
+  });
 
   const stage = STAGES[initialStageIndex];
-
-  // Mobile swipe detection
-  const touchStartY = useRef<number | null>(null);
 
   // Stable callback references to prevent useEffect teardown and unexpected resets
   const callbacksRef = useRef({
@@ -101,13 +102,17 @@ export const GameView: React.FC<GameViewProps> = ({
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // High DPI Canvas setup
+    // High DPI Canvas setup with fill-rate protection on desktop & 4K screens
     const updateSize = () => {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      // DPR capped to 1.25 on screens wider than 1024 to eliminate lag and 4K GPU stalling
+      const dpr = Math.min(window.devicePixelRatio || 1, window.innerWidth >= 1024 ? 1.25 : 1.5);
       const w = window.innerWidth;
       const h = window.innerHeight;
-      canvas.width = w * dpr;
-      canvas.height = h * dpr;
+      canvas.width = Math.round(w * dpr);
+      canvas.height = Math.round(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
       ctx.scale(dpr, dpr);
 
       if (engineRef.current) {
@@ -244,47 +249,105 @@ export const GameView: React.FC<GameViewProps> = ({
     });
   };
 
-  const handleJumpPress = () => {
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchStartTime = useRef<number>(0);
+
+  const handleJumpPress = useCallback(() => {
+    soundManager.userInteracted();
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate?.(10);
+    }
     if (engineRef.current) {
       engineRef.current.triggerJump();
     }
-  };
+  }, []);
 
-  const handleSlidePress = () => {
+  const handleSlidePress = useCallback(() => {
+    soundManager.userInteracted();
+    if (typeof navigator !== 'undefined' && 'vibrate' in navigator) {
+      navigator.vibrate?.(10);
+    }
     if (engineRef.current) {
       engineRef.current.triggerSlide();
     }
-  };
+  }, []);
 
-  // Touch swipe handling on canvas
+  // Comprehensive Mobile Touch & Swipe Handling on Canvas
   const handleTouchStart = (e: React.TouchEvent) => {
-    touchStartY.current = e.touches[0].clientY;
+    if (e.touches.length > 0) {
+      touchStartX.current = e.touches[0].clientX;
+      touchStartY.current = e.touches[0].clientY;
+      touchStartTime.current = Date.now();
+      soundManager.userInteracted();
+    }
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartY.current === null) return;
+    if (touchStartX.current === null || touchStartY.current === null) return;
+    const touchEndX = e.changedTouches[0].clientX;
     const touchEndY = e.changedTouches[0].clientY;
+    const diffX = touchEndX - touchStartX.current;
     const diffY = touchEndY - touchStartY.current;
+    const elapsed = Date.now() - touchStartTime.current;
 
-    if (diffY > 40) {
-      // Swipe down -> Slide
-      handleSlidePress();
-    } else if (Math.abs(diffY) < 20) {
-      // Tap -> Jump
-      handleJumpPress();
+    const absX = Math.abs(diffX);
+    const absY = Math.abs(diffY);
+
+    if (absX > 25 || absY > 25) {
+      // Swipe gesture
+      if (absY > absX) {
+        if (diffY < -25) {
+          // Swipe UP -> Jump!
+          handleJumpPress();
+        } else if (diffY > 25) {
+          // Swipe DOWN -> Slide!
+          handleSlidePress();
+        }
+      } else {
+        if (diffX < -25) {
+          // Swipe LEFT -> Steer Left!
+          engineRef.current?.nudgeLeft(55);
+        } else if (diffX > 25) {
+          // Swipe RIGHT -> Steer Right!
+          engineRef.current?.nudgeRight(55);
+        }
+      }
+    } else if (elapsed < 350) {
+      // Fast Tap: check horizontal zone for single-finger mobile play
+      const screenW = window.innerWidth;
+      if (touchEndX < screenW * 0.28) {
+        // Tapped left third -> Steer Left
+        engineRef.current?.nudgeLeft(45);
+      } else if (touchEndX > screenW * 0.72) {
+        // Tapped right third -> Steer Right
+        engineRef.current?.nudgeRight(45);
+      } else {
+        // Tapped center -> Jump!
+        handleJumpPress();
+      }
     }
+
+    touchStartX.current = null;
     touchStartY.current = null;
   };
 
+  // Mouse click fallback for desktop users without touch
+  const handleCanvasClick = (e: React.MouseEvent) => {
+    // Only fire on mouse clicks (pointerType === 'mouse')
+    if (e.nativeEvent && (e.nativeEvent as any).pointerType === 'touch') return;
+    handleJumpPress();
+  };
+
   return (
-    <div className="relative w-full h-screen overflow-hidden select-none bg-black">
+    <div className="relative w-full h-screen h-[100dvh] overflow-hidden select-none bg-black touch-none">
       {/* Game Canvas */}
       <canvas
         ref={canvasRef}
-        className="w-full h-full block cursor-pointer"
+        className="w-full h-full block cursor-pointer touch-none"
         onTouchStart={handleTouchStart}
         onTouchEnd={handleTouchEnd}
-        onClick={handleJumpPress}
+        onClick={handleCanvasClick}
       />
 
       {/* TOP HUD BAR */}
@@ -425,8 +488,19 @@ export const GameView: React.FC<GameViewProps> = ({
             </div>
           )}
 
-          {/* Action Buttons: Pause & Mute */}
+          {/* Action Buttons: Pause, Mute & On-screen Controls */}
           <div className="flex items-center gap-1.5 pointer-events-auto">
+            <button
+              id="game-controls-toggle"
+              onClick={() => setShowTouchControls((prev) => !prev)}
+              className={`festival-glass p-2 rounded-lg border border-amber-500/30 ${
+                showTouchControls ? 'text-amber-300 bg-amber-500/20' : 'text-amber-300/60'
+              } hover:text-amber-100 cursor-pointer active:scale-95`}
+              title={showTouchControls ? 'Hide Touch Buttons' : 'Show Touch Buttons'}
+            >
+              <Gamepad2 className="w-4 h-4" />
+            </button>
+
             <button
               id="game-sound-toggle"
               onClick={toggleSound}
@@ -474,7 +548,7 @@ export const GameView: React.FC<GameViewProps> = ({
       )}
 
       {/* DESKTOP KEYBOARD CONTROLS HELPER (Subtle bottom bar) */}
-      <div className="hidden sm:flex absolute bottom-3 left-1/2 -translate-x-1/2 z-20 pointer-events-none items-center gap-3 festival-glass px-4 py-1.5 rounded-full border border-amber-500/25 text-[11px] font-medium text-amber-200/80">
+      <div className="hidden sm:flex absolute bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none items-center gap-3 festival-glass px-4 py-1 rounded-full border border-amber-500/25 text-[11px] font-medium text-amber-200/80">
         <span>🎮 <strong className="text-amber-300 font-mono">SPACE / ↑</strong> Jump</span>
         <span>•</span>
         <span><strong className="text-amber-300 font-mono">↓</strong> Slide</span>
@@ -484,40 +558,90 @@ export const GameView: React.FC<GameViewProps> = ({
         <span><strong className="text-amber-300 font-mono">Goal:</strong> 200m to Lord Ganesha 🐘</span>
       </div>
 
-      {/* MOBILE TOUCH CONTROLS (Only visible on touch devices / responsive mobile) */}
-      <div className="absolute bottom-5 left-0 right-0 px-6 flex items-center justify-between pointer-events-auto sm:hidden z-20">
-        <button
-          id="mobile-slide-button"
-          onTouchStart={(e) => {
-            e.stopPropagation();
-            handleSlidePress();
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleSlidePress();
-          }}
-          className="festival-glass w-18 h-18 rounded-2xl border-2 border-amber-500/40 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl active:bg-amber-800/80 active:scale-90 select-none"
-        >
-          <span className="text-xl">⬇</span>
-          <span className="text-[10px] tracking-wider uppercase">SLIDE</span>
-        </button>
+      {/* ON-SCREEN MOBILE / TOUCH CONTROLS (Showing ALL buttons: Left, Right, Slide, Jump) */}
+      {showTouchControls && (
+        <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 px-2.5 sm:px-6 flex items-end justify-between pointer-events-none z-25 select-none pb-[env(safe-area-inset-bottom,8px)]">
+          {/* Left Cluster: Steer Left & Right */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 pointer-events-auto select-none">
+            <button
+              id="btn-steer-left"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                soundManager.userInteracted();
+                if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate?.(8);
+                engineRef.current?.nudgeLeft(45);
+                engineRef.current?.steerLeft(true);
+              }}
+              onPointerUp={(e) => {
+                e.preventDefault();
+                engineRef.current?.steerLeft(false);
+              }}
+              onPointerLeave={() => engineRef.current?.steerLeft(false)}
+              onPointerCancel={() => engineRef.current?.steerLeft(false)}
+              className="festival-glass w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-amber-500/50 bg-stone-950/85 active:bg-amber-800/80 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl select-none cursor-pointer touch-none"
+              title="Steer Left"
+            >
+              <span className="text-lg sm:text-2xl leading-none">◀</span>
+              <span className="text-[9px] sm:text-[10px] tracking-wider uppercase font-black mt-0.5">LEFT</span>
+            </button>
 
-        <button
-          id="mobile-jump-button"
-          onTouchStart={(e) => {
-            e.stopPropagation();
-            handleJumpPress();
-          }}
-          onClick={(e) => {
-            e.stopPropagation();
-            handleJumpPress();
-          }}
-          className="festival-glass w-20 h-20 rounded-2xl border-2 border-amber-400 flex flex-col items-center justify-center font-bold text-amber-200 shadow-xl bg-amber-600/30 active:bg-amber-600/60 active:scale-90 select-none"
-        >
-          <span className="text-2xl">⬆</span>
-          <span className="text-xs tracking-wider uppercase font-black">JUMP</span>
-        </button>
-      </div>
+            <button
+              id="btn-steer-right"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                soundManager.userInteracted();
+                if (typeof navigator !== 'undefined' && 'vibrate' in navigator) navigator.vibrate?.(8);
+                engineRef.current?.nudgeRight(45);
+                engineRef.current?.steerRight(true);
+              }}
+              onPointerUp={(e) => {
+                e.preventDefault();
+                engineRef.current?.steerRight(false);
+              }}
+              onPointerLeave={() => engineRef.current?.steerRight(false)}
+              onPointerCancel={() => engineRef.current?.steerRight(false)}
+              className="festival-glass w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-amber-500/50 bg-stone-950/85 active:bg-amber-800/80 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl select-none cursor-pointer touch-none"
+              title="Steer Right"
+            >
+              <span className="text-lg sm:text-2xl leading-none">▶</span>
+              <span className="text-[9px] sm:text-[10px] tracking-wider uppercase font-black mt-0.5">RIGHT</span>
+            </button>
+          </div>
+
+          {/* Right Cluster: Slide & Jump */}
+          <div className="flex items-center gap-1.5 sm:gap-2.5 pointer-events-auto select-none">
+            <button
+              id="mobile-slide-button"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleSlidePress();
+              }}
+              className="festival-glass w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-orange-500/60 bg-stone-950/85 active:bg-orange-800/80 active:scale-90 flex flex-col items-center justify-center font-bold text-orange-300 shadow-xl select-none cursor-pointer touch-none"
+              title="Slide / Duck"
+            >
+              <span className="text-lg sm:text-2xl leading-none">⬇</span>
+              <span className="text-[9px] sm:text-[10px] tracking-wider uppercase font-black mt-0.5">SLIDE</span>
+            </button>
+
+            <button
+              id="mobile-jump-button"
+              onPointerDown={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                handleJumpPress();
+              }}
+              className="festival-glass w-15 h-15 sm:w-18 sm:h-18 rounded-2xl border-2 border-amber-300 bg-gradient-to-t from-amber-600/50 to-amber-500/40 active:bg-amber-600/80 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-100 shadow-2xl shadow-amber-500/40 select-none cursor-pointer touch-none"
+              title="Jump"
+            >
+              <span className="text-xl sm:text-3xl leading-none">⬆</span>
+              <span className="text-[10px] sm:text-xs tracking-wider uppercase font-black mt-0.5">JUMP</span>
+            </button>
+          </div>
+        </div>
+      )}
 
       {/* PAUSE MODAL OVERLAY */}
       {isPaused && (

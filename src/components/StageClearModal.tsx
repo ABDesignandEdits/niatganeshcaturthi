@@ -24,8 +24,8 @@ export const StageClearModal: React.FC<StageClearModalProps> = ({
   const isEcoStage = stage.isEcoStage;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-lg festival-glass rounded-2xl p-6 border border-amber-500/40 text-amber-50 shadow-2xl text-center">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-lg my-auto festival-glass rounded-2xl sm:rounded-3xl p-4 sm:p-6 border border-amber-500/40 text-amber-50 shadow-2xl text-center max-h-[92vh] max-h-[92dvh] overflow-y-auto">
         {/* Auspicious Shankh & Garland Icon */}
         <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-amber-500/20 border-2 border-amber-400/50 mb-3 animate-bounce">
           <span className="text-3xl">🐚</span>

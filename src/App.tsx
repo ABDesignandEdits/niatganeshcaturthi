@@ -130,9 +130,19 @@ export default function App() {
   };
 
   return (
-    <div className="relative w-full h-screen overflow-hidden bg-stone-950 font-outfit select-none">
-      {/* 1. Main Menu Screen */}
-      {screen === 'menu' && (
+    <div
+      className={`relative w-full ${
+        screen === 'playing'
+          ? 'h-screen h-[100dvh] fixed inset-0 overflow-hidden'
+          : 'min-h-screen min-h-[100dvh] overflow-y-auto overflow-x-hidden'
+      } bg-stone-950 font-outfit select-none`}
+    >
+      {/* 1. Main Menu Screen (Active base view for menu-related screens) */}
+      {(screen === 'menu' ||
+        screen === 'tutorial' ||
+        screen === 'leaderboard' ||
+        screen === 'settings' ||
+        screen === 'about') && (
         <MainMenu
           highScore={highScore}
           onPlay={handlePlayClick}

@@ -43,8 +43,8 @@ export const GameOverModal: React.FC<GameOverModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-md festival-glass rounded-3xl p-6 border-2 border-amber-500/50 text-amber-50 shadow-2xl text-center overflow-hidden">
+    <div className="fixed inset-0 z-50 overflow-y-auto overscroll-contain flex flex-col items-center justify-start sm:justify-center p-2 sm:p-4 bg-black/85 backdrop-blur-md animate-in fade-in">
+      <div className="relative w-full max-w-md my-auto festival-glass rounded-3xl p-4 sm:p-6 border-2 border-amber-500/50 text-amber-50 shadow-2xl text-center max-h-[94vh] max-h-[94dvh] overflow-y-auto">
         {/* Decorative Top Accent Glow */}
         <div className="absolute -top-12 left-1/2 -translate-x-1/2 w-48 h-24 bg-amber-500/25 rounded-full blur-2xl pointer-events-none" />
 

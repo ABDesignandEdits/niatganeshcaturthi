@@ -8,6 +8,7 @@ class SoundManager {
   private musicInterval: number | null = null;
   private dholBeatStep = 0;
   private melodicStep = 0;
+  private noiseBuffer: AudioBuffer | null = null;
   
   public settings: AudioSettings = {
     soundEnabled: true,
@@ -40,6 +41,19 @@ class SoundManager {
       this.sfxGain = this.ctx.createGain();
       this.sfxGain.gain.value = this.settings.soundEnabled ? this.settings.soundVolume : 0;
       this.sfxGain.connect(this.ctx.destination);
+    }
+
+    if (!this.noiseBuffer && this.ctx) {
+      try {
+        const bufferSize = Math.floor(this.ctx.sampleRate * 0.05);
+        this.noiseBuffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
+        const data = this.noiseBuffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+        }
+      } catch {
+        // Fallback gracefully
+      }
     }
 
     if (this.ctx.state === 'suspended') {
@@ -122,30 +136,25 @@ class SoundManager {
     osc.stop(time + 0.1);
 
     // Filtered noise snap
-    const bufferSize = this.ctx.sampleRate * 0.05;
-    const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
-    const data = buffer.getChannelData(0);
-    for (let i = 0; i < bufferSize; i++) {
-      data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.2));
+    if (this.noiseBuffer) {
+      const noise = this.ctx.createBufferSource();
+      noise.buffer = this.noiseBuffer;
+
+      const filter = this.ctx.createBiquadFilter();
+      filter.type = 'bandpass';
+      filter.frequency.value = 2200;
+      filter.Q.value = 3;
+
+      const noiseGain = this.ctx.createGain();
+      noiseGain.gain.setValueAtTime(0.12, time);
+      noiseGain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
+
+      noise.connect(filter);
+      filter.connect(noiseGain);
+      noiseGain.connect(this.musicGain);
+
+      noise.start(time);
     }
-
-    const noise = this.ctx.createBufferSource();
-    noise.buffer = buffer;
-
-    const filter = this.ctx.createBiquadFilter();
-    filter.type = 'bandpass';
-    filter.frequency.value = 2200;
-    filter.Q.value = 3;
-
-    const noiseGain = this.ctx.createGain();
-    noiseGain.gain.setValueAtTime(0.12, time);
-    noiseGain.gain.exponentialRampToValueAtTime(0.001, time + 0.06);
-
-    noise.connect(filter);
-    filter.connect(noiseGain);
-    noiseGain.connect(this.musicGain);
-
-    noise.start(time);
   }
 
   // Traditional brass bell / Manjira chime
