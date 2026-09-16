@@ -20,6 +20,22 @@ import { LeaderboardModal } from './components/LeaderboardModal';
 import { SettingsModal } from './components/SettingsModal';
 import { AboutModal } from './components/AboutModal';
 
+// Festival Mini-Games
+import { RangoliGame } from './components/games/RangoliGame';
+import { ModakKitchenGame } from './components/games/ModakKitchenGame';
+import { DholTashaGame } from './components/games/DholTashaGame';
+import { GaneshaShringaarGame } from './components/games/GaneshaShringaarGame';
+import { EcoClayMurtiGame } from './components/games/EcoClayMurtiGame';
+import { FestiveMemoryGame } from './components/games/FestiveMemoryGame';
+import { ModakTowerGame } from './components/games/ModakTowerGame';
+import { LaddooRushGame } from './components/games/LaddooRushGame';
+import { VisarjanMirajGame } from './components/games/VisarjanMirajGame';
+import { GaneshaNamesGame } from './components/games/GaneshaNamesGame';
+import { DiyaMandalaGame } from './components/games/DiyaMandalaGame';
+import { DurvaPujaGame } from './components/games/DurvaPujaGame';
+import { PandalBuilderGame } from './components/games/PandalBuilderGame';
+import { GaneshaPuzzleGame } from './components/games/GaneshaPuzzleGame';
+
 export default function App() {
   const [screen, setScreen] = useState<GameScreen>('menu');
   const [currentStageIndex, setCurrentStageIndex] = useState(0);
@@ -134,8 +150,8 @@ export default function App() {
       className={`relative w-full ${
         screen === 'playing'
           ? 'h-screen h-[100dvh] fixed inset-0 overflow-hidden'
-          : 'min-h-screen min-h-[100dvh] overflow-y-auto overflow-x-hidden'
-      } bg-stone-950 font-outfit select-none`}
+          : 'w-full min-h-screen min-h-[100dvh] overflow-x-hidden'
+      } bg-stone-950 font-outfit select-none box-border`}
     >
       {/* 1. Main Menu Screen (Active base view for menu-related screens) */}
       {(screen === 'menu' ||
@@ -145,12 +161,84 @@ export default function App() {
         screen === 'about') && (
         <MainMenu
           highScore={highScore}
+          isModalOpen={screen !== 'menu'}
           onPlay={handlePlayClick}
+          onPlayRangoli={() => setScreen('game_rangoli')}
+          onPlayModak={() => setScreen('game_modak')}
+          onPlayDhol={() => setScreen('game_dhol')}
+          onPlayShringaar={() => setScreen('game_shringaar')}
+          onPlayEcoClay={() => setScreen('game_clay')}
+          onPlayMemory={() => setScreen('game_memory')}
+          onPlayModakTower={() => setScreen('game_modak_tower')}
+          onPlayLaddooRush={() => setScreen('game_laddoo_rush')}
+          onPlayVisarjanMiraj={() => setScreen('game_visarjan_miraj')}
+          onPlayGaneshaNames={() => setScreen('game_ganesha_names')}
+          onPlayDiyaMandala={() => setScreen('game_diya_mandala')}
+          onPlayDurvaPuja={() => setScreen('game_durva_puja')}
+          onPlayPandalBuilder={() => setScreen('game_pandal_builder')}
+          onPlayGaneshaPuzzle={() => setScreen('game_ganesha_puzzle')}
           onOpenLeaderboard={() => setScreen('leaderboard')}
           onOpenHowToPlay={() => setScreen('tutorial')}
           onOpenSettings={() => setScreen('settings')}
           onOpenAbout={() => setScreen('about')}
         />
+      )}
+
+      {/* Festival Mini-Games */}
+      {screen === 'game_rangoli' && (
+        <RangoliGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_modak' && (
+        <ModakKitchenGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_dhol' && (
+        <DholTashaGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_shringaar' && (
+        <GaneshaShringaarGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_clay' && (
+        <EcoClayMurtiGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_memory' && (
+        <FestiveMemoryGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_modak_tower' && (
+        <ModakTowerGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_laddoo_rush' && (
+        <LaddooRushGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_visarjan_miraj' && (
+        <VisarjanMirajGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_ganesha_names' && (
+        <GaneshaNamesGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_diya_mandala' && (
+        <DiyaMandalaGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_durva_puja' && (
+        <DurvaPujaGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_pandal_builder' && (
+        <PandalBuilderGame onBack={() => setScreen('menu')} />
+      )}
+
+      {screen === 'game_ganesha_puzzle' && (
+        <GaneshaPuzzleGame onBack={() => setScreen('menu')} />
       )}
 
       {/* 2. Active Game Screen */}

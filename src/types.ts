@@ -1,5 +1,22 @@
 export type StageId = 1 | 2 | 3 | 4 | 5;
 
+export type MiniGameId = 
+  | 'mushak_dash'
+  | 'rangoli'
+  | 'modak_kitchen'
+  | 'dhol_tasha'
+  | 'shringaar'
+  | 'eco_clay'
+  | 'memory_match'
+  | 'modak_tower'
+  | 'laddoo_rush'
+  | 'visarjan_miraj'
+  | 'ganesha_names'
+  | 'diya_mandala'
+  | 'durva_puja'
+  | 'pandal_builder'
+  | 'ganesha_puzzle';
+
 export type GameScreen = 
   | 'menu' 
   | 'tutorial' 
@@ -11,7 +28,21 @@ export type GameScreen =
   | 'victory'
   | 'leaderboard'
   | 'settings'
-  | 'about';
+  | 'about'
+  | 'game_rangoli'
+  | 'game_modak'
+  | 'game_dhol'
+  | 'game_shringaar'
+  | 'game_clay'
+  | 'game_memory'
+  | 'game_tower'
+  | 'game_laddoo'
+  | 'game_visarjan'
+  | 'game_names'
+  | 'game_diya'
+  | 'game_durva'
+  | 'game_pandal'
+  | 'game_puzzle';
 
 export type CollectibleType = 
   | 'modak' 

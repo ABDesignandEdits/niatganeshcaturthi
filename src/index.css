@@ -1,67 +1,496 @@
 @import "tailwindcss";
 
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+:root {
+  --apple-glass-blur-subtle: 14px;
+  --apple-glass-blur-medium: 22px;
+  --apple-glass-blur-heavy: 34px;
+  --apple-glass-sat: 200%;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  max-width: 100vw;
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  touch-action: manipulation;
+  background-color: #060408;
+  color: #fef3c7;
+  font-family: 'Outfit', 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbars for clean festive look */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(14, 7, 6, 0.4);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(217, 119, 6, 0.4);
+  border-radius: 9999px;
+  border: 1px solid rgba(251, 191, 36, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(245, 158, 11, 0.7);
+}
+
 @layer utilities {
   .font-cinzel {
     font-family: 'Cinzel', serif, system-ui;
+  }
+  .font-marcellus {
+    font-family: 'Marcellus', 'Cinzel', serif, system-ui;
+  }
+  .font-cormorant {
+    font-family: 'Cormorant Garamond', serif, system-ui;
   }
   .font-rozha {
     font-family: 'Rozha One', serif, system-ui;
   }
   .font-outfit {
-    font-family: 'Outfit', sans-serif, system-ui;
+    font-family: 'Outfit', -apple-system, sans-serif, system-ui;
+  }
+  .font-inter {
+    font-family: 'Inter', -apple-system, sans-serif, system-ui;
+  }
+  .safe-top {
+    padding-top: max(0.5rem, env(safe-area-inset-top));
+  }
+  .safe-bottom {
+    padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+  }
+  .safe-x {
+    padding-left: max(0.75rem, env(safe-area-inset-left));
+    padding-right: max(0.75rem, env(safe-area-inset-right));
   }
 }
 
-/* Custom festive glow and animation effects */
-@keyframes diyaGlow {
-  0%, 100% {
-    box-shadow: 0 0 15px rgba(251, 191, 36, 0.6), 0 0 30px rgba(245, 158, 11, 0.3);
+/* ==========================================================
+   APPLE-INSPIRED LIQUID GLASS INTERACTION & MATERIAL SYSTEM
+   ========================================================== */
+
+/* 1. Base Liquid Glass Material */
+.apple-liquid-glass,
+.glass-level-1 {
+  background: linear-gradient(135deg, rgba(26, 14, 10, 0.48) 0%, rgba(14, 7, 6, 0.58) 100%);
+  backdrop-filter: blur(var(--apple-glass-blur-subtle)) saturate(var(--apple-glass-sat));
+  -webkit-backdrop-filter: blur(var(--apple-glass-blur-subtle)) saturate(var(--apple-glass-sat));
+  border: 1px solid rgba(251, 191, 36, 0.16);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4),
+              inset 0 1px 1.5px rgba(255, 255, 255, 0.12),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 2. Medium Liquid Glass (Cards, Panels, Controls) */
+.glass-level-2,
+.glass-card,
+.apple-glass-card {
+  position: relative;
+  background: linear-gradient(145deg, rgba(32, 17, 12, 0.65) 0%, rgba(16, 8, 7, 0.72) 100%);
+  backdrop-filter: blur(var(--apple-glass-blur-medium)) saturate(var(--apple-glass-sat));
+  -webkit-backdrop-filter: blur(var(--apple-glass-blur-medium)) saturate(var(--apple-glass-sat));
+  border: 1px solid rgba(251, 191, 36, 0.22);
+  box-shadow: 0 8px 32px -4px rgba(0, 0, 0, 0.55),
+              0 2px 8px -2px rgba(217, 119, 6, 0.12),
+              inset 0 1.2px 1.8px rgba(255, 255, 255, 0.16),
+              inset 0 -1.5px 2px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Moving Light Reflection across Glass */
+.apple-glass-reflection::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 42%,
+    rgba(255, 255, 255, 0.08) 48%,
+    rgba(251, 191, 36, 0.15) 51%,
+    rgba(255, 255, 255, 0.08) 54%,
+    transparent 60%,
+    transparent 100%
+  );
+  background-size: 250% 100%;
+  animation: appleGlassReflect 9s infinite ease-in-out;
+  pointer-events: none;
+  z-index: 1;
+}
+
+@keyframes appleGlassReflect {
+  0% {
+    background-position: 200% 0;
   }
   50% {
-    box-shadow: 0 0 25px rgba(251, 191, 36, 0.9), 0 0 45px rgba(245, 158, 11, 0.5);
+    background-position: -100% 0;
+  }
+  100% {
+    background-position: -100% 0;
   }
 }
 
+/* Glass Card Hover & Active Dynamics */
+.apple-glass-card:hover,
+.glass-card:hover {
+  border-color: rgba(251, 191, 36, 0.48);
+  box-shadow: 0 16px 44px -6px rgba(0, 0, 0, 0.7),
+              0 0 24px -2px rgba(217, 119, 6, 0.28),
+              inset 0 1.5px 2px rgba(255, 255, 255, 0.24);
+  transform: translateY(-3px) scale(1.01);
+}
+
+.apple-glass-card:active,
+.glass-card:active {
+  transform: translateY(1px) scale(0.975);
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.5),
+              inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  transition-duration: 0.12s;
+}
+
+/* 3. Deep Liquid Glass Zone behind Option Groups/Columns */
+.apple-backdrop-zone,
+.glass-level-3,
+.glass-panel,
+.festival-glass {
+  position: relative;
+  background: linear-gradient(155deg, rgba(22, 11, 8, 0.78) 0%, rgba(12, 6, 5, 0.85) 100%);
+  backdrop-filter: blur(var(--apple-glass-blur-heavy)) saturate(210%);
+  -webkit-backdrop-filter: blur(var(--apple-glass-blur-heavy)) saturate(210%);
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  box-shadow: 0 20px 56px -10px rgba(0, 0, 0, 0.8),
+              0 0 32px -4px rgba(217, 119, 6, 0.18),
+              inset 0 1.5px 2px rgba(255, 255, 255, 0.16),
+              inset 0 -1.5px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* 4. Modal Liquid Glass with Refraction Border */
+.glass-level-4,
+.glass-modal,
+.apple-liquid-glass-modal {
+  background: linear-gradient(165deg, rgba(24, 12, 9, 0.92) 0%, rgba(10, 5, 4, 0.96) 100%);
+  backdrop-filter: blur(36px) saturate(220%);
+  -webkit-backdrop-filter: blur(36px) saturate(220%);
+  border: 1px solid rgba(251, 191, 36, 0.36);
+  box-shadow: 0 28px 72px -12px rgba(0, 0, 0, 0.9),
+              0 0 40px -4px rgba(217, 119, 6, 0.25),
+              inset 0 2px 2.5px rgba(255, 255, 255, 0.25),
+              inset 0 -2px 4px rgba(0, 0, 0, 0.45);
+}
+
+/* 5. Apple-Style Dynamic Blur Backdrop Overlay (for Modals & Drawers) */
+.apple-defocus-backdrop {
+  background: radial-gradient(circle at 50% 40%, rgba(35, 18, 12, 0.65) 0%, rgba(6, 3, 4, 0.88) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* 6. Physical Liquid Glass Buttons */
+.glass-button,
+.festival-button,
+.apple-glass-button {
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(234, 88, 12, 0.9) 0%, rgba(217, 119, 6, 0.92) 48%, rgba(146, 64, 14, 0.95) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(254, 240, 138, 0.55);
+  color: #fffbeb;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+  box-shadow: 0 8px 24px -2px rgba(217, 119, 6, 0.45),
+              inset 0 1.5px 1.5px rgba(255, 255, 255, 0.4),
+              inset 0 -1.5px 2px rgba(0, 0, 0, 0.25);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.22s cubic-bezier(0.16, 1, 0.3, 1),
+              background 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-button::after,
+.festival-button::after,
+.apple-glass-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -130%;
+  width: 80%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  transform: skewX(-20deg);
+  transition: 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+
+.glass-button:hover::after,
+.festival-button:hover::after,
+.apple-glass-button:hover::after {
+  left: 160%;
+}
+
+.glass-button:hover,
+.festival-button:hover,
+.apple-glass-button:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.98) 0%, rgba(217, 119, 6, 0.98) 50%, rgba(154, 52, 18, 0.98) 100%);
+  border-color: rgba(254, 240, 138, 0.85);
+  box-shadow: 0 12px 32px -2px rgba(245, 158, 11, 0.6),
+              inset 0 2px 2px rgba(255, 255, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.glass-button:active,
+.festival-button:active,
+.apple-glass-button:active {
+  transform: translateY(1.5px) scale(0.97);
+  box-shadow: 0 3px 12px rgba(0, 0, 0, 0.5),
+              inset 0 1px 1px rgba(255, 255, 255, 0.2);
+  transition-duration: 0.1s;
+}
+
+/* Secondary Liquid Glass Button */
+.glass-button-secondary {
+  position: relative;
+  overflow: hidden;
+  background: rgba(32, 17, 13, 0.65);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border: 1px solid rgba(251, 191, 36, 0.26);
+  color: #fde68a;
+  box-shadow: 0 4px 18px -2px rgba(0, 0, 0, 0.45),
+              inset 0 1px 1.2px rgba(255, 255, 255, 0.14);
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-button-secondary:hover {
+  background: rgba(48, 26, 19, 0.85);
+  border-color: rgba(251, 191, 36, 0.55);
+  color: #ffffff;
+  box-shadow: 0 8px 26px -4px rgba(217, 119, 6, 0.35),
+              inset 0 1px 2px rgba(255, 255, 255, 0.24);
+  transform: translateY(-1.5px);
+}
+
+.glass-button-secondary:active {
+  transform: translateY(1px) scale(0.975);
+}
+
+/* 7. Liquid Glass Floating Dock (Bottom Navigation) */
+.glass-dock,
+.glass-floating,
+.apple-glass-dock {
+  background: linear-gradient(135deg, rgba(20, 10, 8, 0.78) 0%, rgba(12, 6, 5, 0.84) 100%);
+  backdrop-filter: blur(32px) saturate(220%);
+  -webkit-backdrop-filter: blur(32px) saturate(220%);
+  border: 1px solid rgba(251, 191, 36, 0.3);
+  box-shadow: 0 20px 48px -4px rgba(0, 0, 0, 0.82),
+              0 0 24px -2px rgba(217, 119, 6, 0.18),
+              inset 0 1.2px 1.8px rgba(255, 255, 255, 0.2),
+              inset 0 -1px 2px rgba(0, 0, 0, 0.3);
+}
+
+/* Glass Tabs & Category Chips */
+.glass-tab {
+  position: relative;
+  background: rgba(28, 15, 11, 0.6);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(251, 191, 36, 0.2);
+  color: rgba(253, 230, 138, 0.85);
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-tab:hover {
+  background: rgba(44, 23, 16, 0.82);
+  border-color: rgba(251, 191, 36, 0.45);
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.glass-tab.active,
+.glass-active {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.95) 0%, rgba(217, 119, 6, 0.98) 100%);
+  border-color: rgba(254, 240, 138, 0.85);
+  color: #0c0604;
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45),
+              inset 0 1.2px 1.5px rgba(255, 255, 255, 0.5);
+  font-weight: 700;
+}
+
+/* 8. Progressive Sticky Glass Header */
+.apple-sticky-header {
+  transition: background 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              backdrop-filter 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              padding 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.apple-sticky-header.scrolled {
+  background: rgba(14, 7, 6, 0.85);
+  backdrop-filter: blur(28px) saturate(200%);
+  -webkit-backdrop-filter: blur(28px) saturate(200%);
+  border-bottom: 1px solid rgba(251, 191, 36, 0.26);
+  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.75),
+              0 2px 10px rgba(217, 119, 6, 0.12),
+              inset 0 -1px 1px rgba(255, 255, 255, 0.08);
+}
+
+/* 9. Scroll Reveal Transitions (Spring-like Easing) */
+.scroll-reveal {
+  opacity: 0;
+  transform: translateY(28px) scale(0.97);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: opacity, transform;
+}
+
+.scroll-reveal.revealed {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Native CSS Scroll-Driven Animation where supported */
+@supports (animation-timeline: view()) {
+  .scroll-driven-reveal {
+    animation: scrollRevealView ease-out both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 30%;
+  }
+
+  @keyframes scrollRevealView {
+    from {
+      opacity: 0;
+      transform: translateY(28px) scale(0.97);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+/* Animated Sheen */
+.liquid-sheen {
+  background-image: linear-gradient(
+    110deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.08) 40%,
+    rgba(251, 191, 36, 0.18) 50%,
+    rgba(255, 255, 255, 0.08) 60%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: liquidSheen 6s infinite ease-in-out;
+}
+
+@keyframes liquidSheen {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+/* Subtle Diya Pulsing & Flame Glow */
+@keyframes diyaGlow {
+  0%, 100% {
+    box-shadow: 0 0 15px rgba(251, 191, 36, 0.5), 0 0 35px rgba(245, 158, 11, 0.25);
+  }
+  50% {
+    box-shadow: 0 0 28px rgba(251, 191, 36, 0.85), 0 0 50px rgba(245, 158, 11, 0.45);
+  }
+}
+
+.animate-diya-glow {
+  animation: diyaGlow 2.8s infinite ease-in-out;
+}
+
+/* Floating soft motion */
 @keyframes floatSoft {
   0%, 100% {
     transform: translateY(0px);
   }
   50% {
-    transform: translateY(-8px);
+    transform: translateY(-6px);
   }
 }
 
-.animate-diya-glow {
-  animation: diyaGlow 2.5s infinite ease-in-out;
-}
-
 .animate-float {
-  animation: floatSoft 3s infinite ease-in-out;
+  animation: floatSoft 3.5s infinite ease-in-out;
 }
 
-/* Glassmorphism panel styling */
-.festival-glass {
-  background: rgba(45, 18, 5, 0.85);
-  backdrop-filter: blur(12px);
-  border: 1px solid rgba(245, 158, 11, 0.3);
-  box-shadow: 0 12px 36px -6px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(254, 243, 199, 0.15);
+/* Graceful Fallback for browsers without backdrop-filter */
+@supports not (backdrop-filter: blur(10px)) {
+  .apple-liquid-glass,
+  .glass-level-1 {
+    background: rgba(22, 12, 10, 0.94);
+  }
+  .glass-level-2,
+  .glass-card,
+  .apple-glass-card {
+    background: rgba(28, 15, 12, 0.96);
+  }
+  .apple-backdrop-zone,
+  .glass-level-3,
+  .glass-panel,
+  .festival-glass {
+    background: rgba(24, 12, 10, 0.98);
+  }
+  .glass-level-4,
+  .glass-modal,
+  .apple-liquid-glass-modal {
+    background: #120706;
+  }
+  .glass-dock,
+  .glass-floating,
+  .apple-glass-dock {
+    background: rgba(18, 9, 8, 0.97);
+  }
+  .apple-sticky-header.scrolled {
+    background: #100806;
+  }
+  .apple-defocus-backdrop {
+    background: rgba(8, 4, 5, 0.92);
+  }
 }
 
-.festival-button {
-  background: linear-gradient(135deg, #d97706 0%, #b45309 50%, #78350f 100%);
-  border: 1px solid rgba(251, 191, 36, 0.5);
-  color: #fef3c7;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
-  box-shadow: 0 4px 12px rgba(180, 83, 9, 0.35);
-  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.festival-button:hover {
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 50%, #92400e 100%);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-  transform: translateY(-2px);
-}
-
-.festival-button:active {
-  transform: translateY(1px);
+/* Reduced motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .liquid-sheen,
+  .animate-diya-glow,
+  .animate-float,
+  .apple-glass-reflection::before {
+    animation: none !important;
+  }
+  .glass-button::after,
+  .festival-button::after,
+  .apple-glass-button::after {
+    display: none !important;
+  }
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+  * {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
 }

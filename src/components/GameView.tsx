@@ -1,11 +1,13 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
-import { Heart, Pause, Play, Volume2, VolumeX, Leaf, Flame, Sparkles, Gamepad2 } from 'lucide-react';
+import { Heart, Pause, Play, Volume2, VolumeX, Leaf, Flame, Sparkles, Gamepad2, Shield, MoveUp, MoveDown, MoveLeft, MoveRight } from 'lucide-react';
+import { motion } from 'motion/react';
 import { GameEngine } from '../game/engine';
 import { GameRenderer } from '../game/renderer';
 import { STAGES } from '../game/constants';
 import { StageConfig, RangoliColor, PowerUpType } from '../types';
 import { soundManager } from '../audio/soundManager';
 import { getHighScore } from '../storage/storage';
+import { GaneshaImage } from './GaneshaImage';
 
 interface GameViewProps {
   initialStageIndex: number;
@@ -351,14 +353,14 @@ export const GameView: React.FC<GameViewProps> = ({
       />
 
       {/* TOP HUD BAR */}
-      <div className="absolute top-0 left-0 right-0 p-3 sm:p-4 flex items-start justify-between pointer-events-none z-20">
+      <div className="absolute top-0 left-0 right-0 p-2.5 sm:p-4 flex items-start justify-between pointer-events-none z-20 safe-top">
         {/* Left Side: Lives & Combo */}
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-1.5 sm:gap-2">
           {/* Life / Shield Status Badge */}
-          <div className="festival-glass px-3.5 py-1.5 rounded-full flex items-center gap-2 border border-amber-500/30 shadow-md">
+          <div className="glass-level-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-full flex items-center gap-2 border border-amber-500/30 shadow-md">
             {activePowerUps.some((p) => p.type === 'blessing') ? (
               <div className="flex items-center gap-1.5 text-xs font-bold text-amber-300">
-                <span className="animate-pulse">🛡️</span>
+                <Shield className="w-4 h-4 text-amber-400 animate-pulse" />
                 <span>Shielded by Bappa!</span>
               </div>
             ) : (
@@ -367,7 +369,7 @@ export const GameView: React.FC<GameViewProps> = ({
                   {[1, 2, 3].map((heartIndex) => (
                     <Heart
                       key={heartIndex}
-                      className={`w-4 h-4 transition-all duration-300 ${
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 transition-all duration-300 ${
                         heartIndex <= lives
                           ? 'fill-red-500 text-red-500 animate-pulse'
                           : 'fill-stone-800 text-stone-600 opacity-40'
@@ -375,7 +377,7 @@ export const GameView: React.FC<GameViewProps> = ({
                     />
                   ))}
                 </div>
-                <span className="text-xs font-bold text-amber-200">
+                <span className="text-[11px] sm:text-xs font-bold text-amber-200">
                   {lives} {lives === 1 ? 'Heart' : 'Hearts'}
                 </span>
               </div>
@@ -384,9 +386,9 @@ export const GameView: React.FC<GameViewProps> = ({
 
           {/* Combo Multiplier Flame Badge */}
           {combo >= 2 && (
-            <div className="festival-glass px-3 py-1 rounded-full flex items-center gap-1.5 border border-orange-500/40 animate-pulse self-start">
-              <Flame className="w-4 h-4 text-orange-400 fill-orange-400" />
-              <span className="font-outfit font-black text-xs text-orange-300">
+            <div className="glass-level-2 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded-full flex items-center gap-1.5 border border-orange-500/40 animate-pulse self-start">
+              <Flame className="w-3.5 h-3.5 text-orange-400 fill-orange-400" />
+              <span className="font-outfit font-black text-[11px] sm:text-xs text-orange-300">
                 x{combo} COMBO!
               </span>
             </div>
@@ -394,11 +396,11 @@ export const GameView: React.FC<GameViewProps> = ({
 
           {/* Active Power-Ups */}
           {activePowerUps.length > 0 && (
-            <div className="flex flex-col gap-1 mt-1">
+            <div className="flex flex-col gap-1 mt-0.5">
               {activePowerUps.map((p) => (
                 <div
                   key={p.type}
-                  className="festival-glass px-2.5 py-1 rounded-lg flex items-center gap-1.5 text-xs font-bold border border-amber-400/40 animate-bounce text-amber-200"
+                  className="glass-level-2 px-2.5 py-1 rounded-xl flex items-center gap-1.5 text-xs font-bold border border-amber-400/40 animate-bounce text-amber-200"
                 >
                   <Sparkles className="w-3.5 h-3.5 text-amber-400" />
                   <span className="capitalize">{p.type === 'blessing' ? 'Divine Shield' : p.type}</span>
@@ -409,32 +411,31 @@ export const GameView: React.FC<GameViewProps> = ({
           )}
         </div>
 
-        {/* Center: Stage Title & 30m Progress Meter */}
+        {/* Center: Stage Title & Progress Meter */}
         <div className="flex flex-col items-center max-w-xs sm:max-w-md w-full px-2">
-          <div className="festival-glass px-4 py-1 rounded-full border border-amber-500/30 mb-1 flex items-center gap-2">
+          <div className="glass-level-2 px-3 sm:px-4 py-1 rounded-full border border-amber-500/30 mb-1 flex items-center gap-2">
             <span className="font-cinzel text-xs sm:text-sm font-bold text-amber-300">
               {stage.title}
             </span>
-            <span className="text-amber-200/90 text-xs font-mono font-bold">
+            <span className="text-amber-200/90 text-[11px] sm:text-xs font-mono font-bold">
               • {currentMetres}m / {stage.targetDistance || 30}m
             </span>
           </div>
 
           {/* Progress Bar with Ganesha Goal Destination */}
-          <div className="w-full bg-stone-900/80 rounded-full h-3.5 p-0.5 border border-amber-500/40 shadow-inner relative overflow-hidden flex items-center">
+          <div className="w-full glass-level-1 rounded-full h-3 sm:h-3.5 p-0.5 border border-amber-500/40 shadow-inner relative overflow-hidden flex items-center">
             <div
               className="bg-gradient-to-r from-amber-500 via-orange-400 to-amber-300 h-full rounded-full transition-all duration-150"
               style={{ width: `${Math.max(2, progress * 100)}%` }}
             />
-            {/* End Ganesha Shrine Icon */}
-            <span className="absolute right-1 text-xs" title="Reach Lord Ganesha at 30m">
-              🐘
+            <span className="absolute right-0.5 flex items-center justify-center" title="Reach Lord Ganesha at 30m">
+              <GaneshaImage className="w-3.5 h-3.5 sm:w-4 sm:h-4 object-contain drop-shadow" />
             </span>
           </div>
 
           {/* Stage 2 Rangoli Color Sequence HUD */}
           {stage.hasColorSequence && colorSequence && (
-            <div className="festival-glass mt-2 px-3 py-1 rounded-xl flex items-center gap-2 border border-amber-400/40">
+            <div className="glass-level-2 mt-1.5 px-3 py-1 rounded-xl flex items-center gap-2 border border-amber-400/40">
               <span className="text-[10px] uppercase tracking-wider text-amber-200 font-bold">
                 Target:
               </span>
@@ -450,7 +451,7 @@ export const GameView: React.FC<GameViewProps> = ({
                   return (
                     <div
                       key={color}
-                      className={`w-4 h-4 rounded-full ${bgClass} transition-all duration-200 ${
+                      className={`w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full ${bgClass} transition-all duration-200 ${
                         isCurrent
                           ? 'scale-125 ring-2 ring-white ring-offset-1 ring-offset-black'
                           : isDone
@@ -466,21 +467,21 @@ export const GameView: React.FC<GameViewProps> = ({
         </div>
 
         {/* Right Side: Score, Eco Score & Audio/Pause Actions */}
-        <div className="flex flex-col items-end gap-2">
+        <div className="flex flex-col items-end gap-1.5 sm:gap-2">
           {/* Score Counter */}
-          <div className="festival-glass px-4 py-1.5 rounded-xl border border-amber-500/30 text-right shadow-md">
-            <span className="text-[10px] uppercase tracking-wider text-amber-300/80 block">Score</span>
-            <span className="font-outfit font-black text-base sm:text-lg text-amber-300 leading-none">
+          <div className="glass-level-2 px-3 sm:px-4 py-1 sm:py-1.5 rounded-2xl border border-amber-500/30 text-right shadow-md">
+            <span className="text-[9px] sm:text-[10px] uppercase tracking-wider text-amber-300/80 block font-cinzel">Score</span>
+            <span className="font-outfit font-black text-sm sm:text-base text-amber-300 leading-none">
               {score.toLocaleString()}
             </span>
           </div>
 
-          {/* Eco Score (if Eco stage or accumulated) */}
+          {/* Eco Score */}
           {(stage.isEcoStage || ecoScore > 0) && (
-            <div className="festival-glass px-3 py-1 rounded-xl border border-emerald-500/40 text-right flex items-center gap-1.5">
+            <div className="glass-level-2 px-2.5 sm:px-3 py-1 rounded-xl border border-emerald-500/40 text-right flex items-center gap-1.5">
               <Leaf className="w-3.5 h-3.5 text-emerald-400" />
               <div>
-                <span className="text-[9px] uppercase tracking-wider text-emerald-300 block">Eco Score</span>
+                <span className="text-[9px] uppercase tracking-wider text-emerald-300 block">Eco</span>
                 <span className="font-outfit font-bold text-xs text-emerald-300 leading-none">
                   {ecoScore}
                 </span>
@@ -493,8 +494,8 @@ export const GameView: React.FC<GameViewProps> = ({
             <button
               id="game-controls-toggle"
               onClick={() => setShowTouchControls((prev) => !prev)}
-              className={`festival-glass p-2 rounded-lg border border-amber-500/30 ${
-                showTouchControls ? 'text-amber-300 bg-amber-500/20' : 'text-amber-300/60'
+              className={`glass-level-2 p-2 rounded-xl border border-amber-500/30 ${
+                showTouchControls ? 'text-amber-300 glass-active' : 'text-amber-300/60'
               } hover:text-amber-100 cursor-pointer active:scale-95`}
               title={showTouchControls ? 'Hide Touch Buttons' : 'Show Touch Buttons'}
             >
@@ -504,7 +505,7 @@ export const GameView: React.FC<GameViewProps> = ({
             <button
               id="game-sound-toggle"
               onClick={toggleSound}
-              className="festival-glass p-2 rounded-lg border border-amber-500/30 text-amber-300 hover:text-amber-100 cursor-pointer active:scale-95"
+              className="glass-level-2 p-2 rounded-xl border border-amber-500/30 text-amber-300 hover:text-amber-100 cursor-pointer active:scale-95"
               title="Toggle Audio"
             >
               {soundEnabled ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
@@ -513,7 +514,7 @@ export const GameView: React.FC<GameViewProps> = ({
             <button
               id="game-pause-toggle"
               onClick={togglePause}
-              className="festival-glass p-2 rounded-lg border border-amber-500/30 text-amber-300 hover:text-amber-100 cursor-pointer active:scale-95"
+              className="glass-level-2 p-2 rounded-xl border border-amber-500/30 text-amber-300 hover:text-amber-100 cursor-pointer active:scale-95"
               title="Pause Game"
             >
               <Pause className="w-4 h-4" />
@@ -522,45 +523,45 @@ export const GameView: React.FC<GameViewProps> = ({
         </div>
       </div>
 
-      {/* 200m LORD GANESHA APPROACHING CELEBRATION BANNER */}
-      {currentMetres >= 180 && (
+      {/* APPROACHING LORD GANESHA CELEBRATION BANNER */}
+      {currentMetres >= 25 && (
         <div className="absolute top-20 left-1/2 -translate-x-1/2 z-30 pointer-events-none animate-bounce">
-          <div className="festival-glass px-5 py-2.5 rounded-2xl border-2 border-amber-400 bg-amber-950/85 shadow-2xl flex items-center gap-2.5">
-            <span className="text-xl animate-spin">✨</span>
-            <span className="font-cinzel font-black text-sm sm:text-base text-amber-300">
-              {currentMetres >= 200
-                ? '🙏 REACHED LORD GANESHA! RECEIVING DIVINE BLESSINGS! 🙏'
-                : `✨ ${200 - currentMetres}M TO LORD GANESHA! REACH HIM! ✨`}
+          <div className="glass-modal px-4 sm:px-5 py-2 sm:py-2.5 rounded-2xl border border-amber-400 shadow-2xl flex items-center gap-2.5">
+            <Sparkles className="w-5 h-5 text-amber-400 animate-spin" />
+            <span className="font-cinzel font-black text-xs sm:text-sm text-amber-300">
+              {currentMetres >= 30
+                ? 'REACHED LORD GANESHA! RECEIVING DIVINE BLESSINGS!'
+                : `${30 - currentMetres}M TO LORD GANESHA! KEEP DASHING!`}
             </span>
-            <span className="text-xl">🐘</span>
+            <GaneshaImage className="w-5 h-5 sm:w-6 sm:h-6 object-contain drop-shadow" />
           </div>
         </div>
       )}
 
-      {/* EASY OBSTACLE ACTION ALERT (Simplifies gameplay for anyone to play) */}
-      {obstacleWarning && currentMetres < 185 && (
+      {/* EASY OBSTACLE ACTION ALERT */}
+      {obstacleWarning && currentMetres < 26 && (
         <div className="absolute top-28 left-1/2 -translate-x-1/2 z-25 pointer-events-none animate-pulse">
-          <div className="festival-glass px-4 py-2 rounded-xl border-2 border-orange-400 bg-stone-900/90 shadow-xl flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-200">
-            <span className="text-base">{obstacleWarning === 'jump' ? '⬆️' : '⬇️'}</span>
+          <div className="glass-level-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-2xl border-2 border-orange-400 shadow-xl flex items-center gap-2 text-xs sm:text-sm font-bold text-amber-200">
+            {obstacleWarning === 'jump' ? <MoveUp className="w-4 h-4 text-amber-400" /> : <MoveDown className="w-4 h-4 text-orange-400" />}
             <span>{obstacleWarning === 'jump' ? 'UPCOMING OBSTACLE: JUMP (SPACE / TAP)' : 'UPCOMING BARRIER: SLIDE (DOWN / SWIPE)'}</span>
           </div>
         </div>
       )}
 
-      {/* DESKTOP KEYBOARD CONTROLS HELPER (Subtle bottom bar) */}
-      <div className="hidden sm:flex absolute bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none items-center gap-3 festival-glass px-4 py-1 rounded-full border border-amber-500/25 text-[11px] font-medium text-amber-200/80">
-        <span>🎮 <strong className="text-amber-300 font-mono">SPACE / ↑</strong> Jump</span>
+      {/* DESKTOP KEYBOARD CONTROLS HELPER */}
+      <div className="hidden sm:flex absolute bottom-2 left-1/2 -translate-x-1/2 z-20 pointer-events-none items-center gap-3 glass-level-2 px-4 py-1 rounded-full border border-amber-500/25 text-[11px] font-medium text-amber-200/80">
+        <span><strong className="text-amber-300 font-mono">SPACE / ↑</strong> Jump</span>
         <span>•</span>
         <span><strong className="text-amber-300 font-mono">↓</strong> Slide</span>
         <span>•</span>
         <span><strong className="text-amber-300 font-mono">← / →</strong> Steer</span>
         <span>•</span>
-        <span><strong className="text-amber-300 font-mono">Goal:</strong> 200m to Lord Ganesha 🐘</span>
+        <span className="flex items-center gap-1.5"><strong className="text-amber-300 font-mono">Goal:</strong> 30m to Lord Ganesha <GaneshaImage className="w-4 h-4 object-contain inline-block" /></span>
       </div>
 
-      {/* ON-SCREEN MOBILE / TOUCH CONTROLS (Showing ALL buttons: Left, Right, Slide, Jump) */}
+      {/* ON-SCREEN MOBILE / TOUCH CONTROLS */}
       {showTouchControls && (
-        <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 px-2.5 sm:px-6 flex items-end justify-between pointer-events-none z-25 select-none pb-[env(safe-area-inset-bottom,8px)]">
+        <div className="absolute bottom-2 sm:bottom-4 left-0 right-0 px-2.5 sm:px-6 flex items-end justify-between pointer-events-none z-25 select-none pb-[max(0.5rem,env(safe-area-inset-bottom))]">
           {/* Left Cluster: Steer Left & Right */}
           <div className="flex items-center gap-1.5 sm:gap-2.5 pointer-events-auto select-none">
             <button
@@ -579,10 +580,10 @@ export const GameView: React.FC<GameViewProps> = ({
               }}
               onPointerLeave={() => engineRef.current?.steerLeft(false)}
               onPointerCancel={() => engineRef.current?.steerLeft(false)}
-              className="festival-glass w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-amber-500/50 bg-stone-950/85 active:bg-amber-800/80 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl select-none cursor-pointer touch-none"
+              className="glass-card w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-amber-500/50 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl select-none cursor-pointer touch-none"
               title="Steer Left"
             >
-              <span className="text-lg sm:text-2xl leading-none">◀</span>
+              <MoveLeft className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="text-[9px] sm:text-[10px] tracking-wider uppercase font-black mt-0.5">LEFT</span>
             </button>
 
@@ -602,10 +603,10 @@ export const GameView: React.FC<GameViewProps> = ({
               }}
               onPointerLeave={() => engineRef.current?.steerRight(false)}
               onPointerCancel={() => engineRef.current?.steerRight(false)}
-              className="festival-glass w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-amber-500/50 bg-stone-950/85 active:bg-amber-800/80 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl select-none cursor-pointer touch-none"
+              className="glass-card w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-amber-500/50 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-300 shadow-xl select-none cursor-pointer touch-none"
               title="Steer Right"
             >
-              <span className="text-lg sm:text-2xl leading-none">▶</span>
+              <MoveRight className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="text-[9px] sm:text-[10px] tracking-wider uppercase font-black mt-0.5">RIGHT</span>
             </button>
           </div>
@@ -619,10 +620,10 @@ export const GameView: React.FC<GameViewProps> = ({
                 e.stopPropagation();
                 handleSlidePress();
               }}
-              className="festival-glass w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-orange-500/60 bg-stone-950/85 active:bg-orange-800/80 active:scale-90 flex flex-col items-center justify-center font-bold text-orange-300 shadow-xl select-none cursor-pointer touch-none"
+              className="glass-card w-13 h-13 sm:w-16 sm:h-16 rounded-2xl border-2 border-orange-500/60 active:scale-90 flex flex-col items-center justify-center font-bold text-orange-300 shadow-xl select-none cursor-pointer touch-none"
               title="Slide / Duck"
             >
-              <span className="text-lg sm:text-2xl leading-none">⬇</span>
+              <MoveDown className="w-5 h-5 sm:w-6 sm:h-6" />
               <span className="text-[9px] sm:text-[10px] tracking-wider uppercase font-black mt-0.5">SLIDE</span>
             </button>
 
@@ -633,10 +634,10 @@ export const GameView: React.FC<GameViewProps> = ({
                 e.stopPropagation();
                 handleJumpPress();
               }}
-              className="festival-glass w-15 h-15 sm:w-18 sm:h-18 rounded-2xl border-2 border-amber-300 bg-gradient-to-t from-amber-600/50 to-amber-500/40 active:bg-amber-600/80 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-100 shadow-2xl shadow-amber-500/40 select-none cursor-pointer touch-none"
+              className="glass-button w-15 h-15 sm:w-18 sm:h-18 rounded-2xl border-2 border-amber-300 active:scale-90 flex flex-col items-center justify-center font-bold text-amber-100 shadow-2xl shadow-amber-500/40 select-none cursor-pointer touch-none"
               title="Jump"
             >
-              <span className="text-xl sm:text-3xl leading-none">⬆</span>
+              <MoveUp className="w-6 h-6 sm:w-7 sm:h-7" />
               <span className="text-[10px] sm:text-xs tracking-wider uppercase font-black mt-0.5">JUMP</span>
             </button>
           </div>
@@ -645,16 +646,25 @@ export const GameView: React.FC<GameViewProps> = ({
 
       {/* PAUSE MODAL OVERLAY */}
       {isPaused && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-          <div className="festival-glass w-full max-w-sm rounded-2xl p-6 border border-amber-500/40 text-center shadow-2xl">
-            <h3 className="font-cinzel text-2xl font-bold text-amber-300 mb-2">Game Paused</h3>
-            <p className="text-xs text-amber-200/70 mb-5">Take a peaceful breath and resume your festive dash!</p>
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 apple-defocus-backdrop safe-top safe-bottom safe-x box-border">
+          <motion.div 
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="pause-dialog-title"
+            initial={{ opacity: 0, scale: 0.93, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.95, y: 15 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 320 }}
+            className="apple-liquid-glass-modal apple-glass-reflection w-full max-w-sm rounded-3xl p-6 border border-amber-500/40 text-center shadow-2xl"
+          >
+            <h3 id="pause-dialog-title" className="font-cinzel text-2xl font-bold text-amber-300 mb-2">Game Paused</h3>
+            <p className="text-xs text-amber-200/70 mb-5 font-marcellus">Take a peaceful breath and resume your festive dash!</p>
 
             <div className="flex flex-col gap-3">
               <button
                 id="resume-btn"
                 onClick={togglePause}
-                className="festival-button py-3 px-6 rounded-xl font-bold text-base flex items-center justify-center gap-2 cursor-pointer"
+                className="apple-glass-button py-3 px-6 rounded-2xl font-cinzel font-bold text-base flex items-center justify-center gap-2 cursor-pointer shadow-lg shadow-amber-500/25 active:scale-[0.98]"
               >
                 <Play className="w-4 h-4 fill-current" />
                 <span>RESUME</span>
@@ -663,12 +673,12 @@ export const GameView: React.FC<GameViewProps> = ({
               <button
                 id="exit-menu-btn"
                 onClick={onExitToMenu}
-                className="w-full py-2.5 rounded-xl border border-amber-500/30 text-amber-200/80 hover:text-amber-100 hover:bg-amber-900/30 text-xs font-semibold cursor-pointer"
+                className="glass-button-secondary w-full py-2.5 rounded-xl text-xs font-semibold cursor-pointer active:scale-95"
               >
                 QUIT TO MAIN MENU
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

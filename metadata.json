@@ -1,6 +1,6 @@
 {
   "name": "Mushak Dash",
-  "description": "A Vinayaka Chaturthi Festival Adventure 2D runner game celebrating Lord Ganesha with Mushak",
+  "description": "A Vinayaka Chaturthi Festival Adventure featuring the 2D pilgrimage runner and 14 authentic festival games: Modak Tower Stacker, Laddoo Rush, Visarjan Miraj, 108 Divine Names, Diya Mandala, Durva Puja, Pandal Decorator, Jigsaw Puzzle, Rangoli, Modak Kitchen, Dhol Tasha, Shringaar Aarti, Eco-Clay, and Bhakti Memory.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

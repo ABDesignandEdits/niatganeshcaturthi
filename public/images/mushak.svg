@@ -1,0 +1,219 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Background Soft Divine Glow -->
+    <radialGradient id="mushakAura" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fef3c7" stop-opacity="0.6"/>
+      <stop offset="60%" stop-color="#fef08a" stop-opacity="0.2"/>
+      <stop offset="100%" stop-color="#fef08a" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Teal Circular Base Gradient (As in photo) -->
+    <linearGradient id="tealBase" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="30%" stop-color="#0d9488"/>
+      <stop offset="85%" stop-color="#0f766e"/>
+      <stop offset="100%" stop-color="#115e59"/>
+    </linearGradient>
+
+    <!-- Sculpted Clay Mouse Body (Slate Grey / Charcoal as in photo) -->
+    <radialGradient id="mouseBodyGrad" cx="45%" cy="35%" r="60%">
+      <stop offset="0%" stop-color="#94a3b8"/>
+      <stop offset="30%" stop-color="#64748b"/>
+      <stop offset="75%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </radialGradient>
+
+    <linearGradient id="mouseShading" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64748b"/>
+      <stop offset="50%" stop-color="#475569"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+
+    <!-- Delicate Pink Ear & Paws Gradient -->
+    <radialGradient id="pinkSkin" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#ffe4e6"/>
+      <stop offset="50%" stop-color="#fbcfe8"/>
+      <stop offset="85%" stop-color="#f472b6"/>
+      <stop offset="100%" stop-color="#db2777"/>
+    </radialGradient>
+
+    <!-- Festival Red Vest / Blanket (Exact match to photo) -->
+    <linearGradient id="redSaddle" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ef4444"/>
+      <stop offset="40%" stop-color="#dc2626"/>
+      <stop offset="80%" stop-color="#991b1b"/>
+      <stop offset="100%" stop-color="#7f1d1d"/>
+    </linearGradient>
+
+    <!-- Raised Gold Embroidery Border -->
+    <linearGradient id="goldEmbroidery" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ca8a04"/>
+      <stop offset="30%" stop-color="#fef08a"/>
+      <stop offset="60%" stop-color="#facc15"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+
+    <!-- Soft Drop Shadow -->
+    <filter id="mushakShadow" x="-15%" y="-15%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="8" flood-color="#000000" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Divine Aura -->
+  <circle cx="250" cy="250" r="210" fill="url(#mushakAura)"/>
+
+  <!-- Teal Circular Base Stand (From User Photo) -->
+  <g id="baseStand" filter="url(#mushakShadow)">
+    <!-- Base Thickness / Rim -->
+    <ellipse cx="250" cy="428" rx="165" ry="38" fill="#115e59"/>
+    <!-- Top Circular Surface -->
+    <ellipse cx="250" cy="422" rx="162" ry="34" fill="url(#tealBase)"/>
+    <!-- Inner concentric bevel groove -->
+    <ellipse cx="250" cy="422" rx="150" ry="30" fill="none" stroke="#5eead4" stroke-width="2" opacity="0.6"/>
+  </g>
+
+  <!-- Long Slender Mouse Tail Curving on Teal Base -->
+  <g id="tail">
+    <path d="M 235 385 C 190 395 130 405 135 425 C 140 440 200 442 245 438" fill="none" stroke="#334155" stroke-width="12" stroke-linecap="round"/>
+    <path d="M 235 385 C 190 395 130 405 135 425 C 140 440 200 442 245 438" fill="none" stroke="#64748b" stroke-width="8" stroke-linecap="round"/>
+    <!-- Delicate pink tip -->
+    <circle cx="245" cy="438" r="4.5" fill="#f472b6"/>
+  </g>
+
+  <!-- Hind Paws resting on base (Pink toes) -->
+  <g id="hindFeet">
+    <!-- Left Foot -->
+    <g transform="translate(195 408)">
+      <ellipse cx="0" cy="0" rx="18" ry="10" fill="url(#pinkSkin)"/>
+      <circle cx="-10" cy="3" r="4" fill="#fda4af"/>
+      <circle cx="-3" cy="5" r="4" fill="#fda4af"/>
+      <circle cx="5" cy="4" r="3.5" fill="#fda4af"/>
+    </g>
+    <!-- Right Foot -->
+    <g transform="translate(305 408)">
+      <ellipse cx="0" cy="0" rx="18" ry="10" fill="url(#pinkSkin)"/>
+      <circle cx="-5" cy="4" r="3.5" fill="#fda4af"/>
+      <circle cx="3" cy="5" r="4" fill="#fda4af"/>
+      <circle cx="10" cy="3" r="4" fill="#fda4af"/>
+    </g>
+  </g>
+
+  <!-- Mouse Torso & Haunches sitting upright (Sculpted ceramic look) -->
+  <g id="body" filter="url(#mushakShadow)">
+    <!-- Chubby pear-shaped lower body -->
+    <ellipse cx="250" cy="335" rx="72" ry="78" fill="url(#mouseBodyGrad)"/>
+    <!-- Left Haunch curve -->
+    <path d="M 180 340 C 175 380 185 410 215 412 C 220 380 205 340 180 340 Z" fill="url(#mouseShading)"/>
+    <!-- Right Haunch curve -->
+    <path d="M 320 340 C 325 380 315 410 285 412 C 280 380 295 340 320 340 Z" fill="url(#mouseShading)"/>
+  </g>
+
+  <!-- Ceremonial Red Embroidered Festival Saddle/Jacket (Exact User Photo Match) -->
+  <g id="festivalSaddle" filter="url(#mushakShadow)">
+    <!-- Red Cloth Draped around back and shoulders -->
+    <path d="M 195 245 C 190 290 192 355 250 358 C 308 355 310 290 305 245 C 290 238 270 235 250 235 C 230 235 210 238 195 245 Z" fill="url(#redSaddle)"/>
+    <!-- Raised Gold Zari Embroidery Borders -->
+    <path d="M 195 245 C 190 290 192 355 250 358 C 308 355 310 290 305 245" fill="none" stroke="url(#goldEmbroidery)" stroke-width="7" stroke-linecap="round"/>
+    <path d="M 195 245 C 215 238 235 235 250 235 C 265 235 285 238 305 245" fill="none" stroke="url(#goldEmbroidery)" stroke-width="6" stroke-linecap="round"/>
+    
+    <!-- Sacred Auspicious Golden Motifs embroidered on Red Cloth (Om / Swastik inspired) -->
+    <!-- Central Auspicious Motif -->
+    <circle cx="250" cy="295" r="14" fill="none" stroke="url(#goldEmbroidery)" stroke-width="3"/>
+    <circle cx="250" cy="295" r="5" fill="url(#goldEmbroidery)"/>
+    <!-- Radiating ornamental floral leaves -->
+    <path d="M 250 274 L 250 281 M 250 309 L 250 316 M 229 295 L 236 295 M 264 295 L 271 295" stroke="url(#goldEmbroidery)" stroke-width="2.5" stroke-linecap="round"/>
+    <circle cx="230" cy="275" r="3.5" fill="url(#goldEmbroidery)"/>
+    <circle cx="270" cy="275" r="3.5" fill="url(#goldEmbroidery)"/>
+    <circle cx="230" cy="315" r="3.5" fill="url(#goldEmbroidery)"/>
+    <circle cx="270" cy="315" r="3.5" fill="url(#goldEmbroidery)"/>
+  </g>
+
+  <!-- Large Rounded Cute Mouse Ears (Exact Photo Match) -->
+  <g id="ears" filter="url(#mushakShadow)">
+    <!-- Left Ear (Viewer's Left) -->
+    <g transform="translate(185 145)">
+      <!-- Outer Slate Ear -->
+      <ellipse cx="0" cy="0" rx="34" ry="42" fill="url(#mouseBodyGrad)" transform="rotate(-18)"/>
+      <!-- Inner Rosy Pink Interior -->
+      <ellipse cx="2" cy="0" rx="24" ry="32" fill="url(#pinkSkin)" transform="rotate(-18)"/>
+      <ellipse cx="4" cy="2" rx="14" ry="22" fill="#fda4af" opacity="0.6" transform="rotate(-18)"/>
+    </g>
+
+    <!-- Right Ear (Viewer's Right) -->
+    <g transform="translate(315 145)">
+      <!-- Outer Slate Ear -->
+      <ellipse cx="0" cy="0" rx="34" ry="42" fill="url(#mouseBodyGrad)" transform="rotate(18)"/>
+      <!-- Inner Rosy Pink Interior -->
+      <ellipse cx="-2" cy="0" rx="24" ry="32" fill="url(#pinkSkin)" transform="rotate(18)"/>
+      <ellipse cx="-4" cy="2" rx="14" ry="22" fill="#fda4af" opacity="0.6" transform="rotate(18)"/>
+    </g>
+  </g>
+
+  <!-- Mouse Head & Snout (Cute 3D Sculpted Figurine) -->
+  <g id="head" filter="url(#mushakShadow)">
+    <!-- Main Cranium -->
+    <ellipse cx="250" cy="190" rx="46" ry="48" fill="url(#mouseBodyGrad)"/>
+    <!-- Snout bridge tapering down to nose -->
+    <path d="M 232 185 C 235 215 242 230 250 236 C 258 230 265 215 268 185 Z" fill="url(#mouseBodyGrad)"/>
+    <!-- Cute Pink Nose Tip (As in photo) -->
+    <ellipse cx="250" cy="235" rx="6.5" ry="4.5" fill="url(#pinkSkin)"/>
+    <!-- Subtle smile lines -->
+    <path d="M 244 240 Q 250 244 256 240" stroke="#334155" stroke-width="2" fill="none" stroke-linecap="round"/>
+  </g>
+
+  <!-- Delicate Radiating Whiskers (Black & Silver) -->
+  <g id="whiskers">
+    <!-- Left Whiskers -->
+    <line x1="240" y1="232" x2="195" y2="225" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="239" y1="235" x2="190" y2="238" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="240" y1="238" x2="198" y2="250" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+    <!-- Right Whiskers -->
+    <line x1="260" y1="232" x2="305" y2="225" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="261" y1="235" x2="310" y2="238" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+    <line x1="260" y1="238" x2="302" y2="250" stroke="#334155" stroke-width="1.8" stroke-linecap="round"/>
+  </g>
+
+  <!-- Big Glossy Black Bead Eyes with Specular Sparkle (Exact Photo Match) -->
+  <g id="eyes">
+    <!-- Left Eye -->
+    <g transform="translate(216 172)">
+      <circle cx="0" cy="0" r="8.5" fill="#09090b"/>
+      <!-- Soft rim -->
+      <circle cx="0" cy="0" r="8.5" fill="none" stroke="#475569" stroke-width="1"/>
+      <!-- Primary white catchlight -->
+      <circle cx="-2.5" cy="-2.5" r="2.8" fill="#ffffff"/>
+      <!-- Secondary ambient sparkle -->
+      <circle cx="2.5" cy="2.5" r="1.4" fill="#ffffff" opacity="0.8"/>
+    </g>
+    <!-- Right Eye -->
+    <g transform="translate(284 172)">
+      <circle cx="0" cy="0" r="8.5" fill="#09090b"/>
+      <!-- Soft rim -->
+      <circle cx="0" cy="0" r="8.5" fill="none" stroke="#475569" stroke-width="1"/>
+      <!-- Primary white catchlight -->
+      <circle cx="-2.5" cy="-2.5" r="2.8" fill="#ffffff"/>
+      <!-- Secondary ambient sparkle -->
+      <circle cx="2.5" cy="2.5" r="1.4" fill="#ffffff" opacity="0.8"/>
+    </g>
+  </g>
+
+  <!-- Front Paws folded together in Namaste / Anjali Mudra Prayer (Exact Photo Match) -->
+  <g id="prayerPaws" filter="url(#mushakShadow)">
+    <!-- Slender Forearms rising from sides -->
+    <path d="M 210 260 C 220 255 235 245 242 240" stroke="url(#mouseBodyGrad)" stroke-width="14" stroke-linecap="round" fill="none"/>
+    <path d="M 290 260 C 280 255 265 245 258 240" stroke="url(#mouseBodyGrad)" stroke-width="14" stroke-linecap="round" fill="none"/>
+
+    <!-- Two Pink Paws Pressed Together in Reverent Pranam -->
+    <g transform="translate(250 238)">
+      <!-- Left Paw -->
+      <path d="M -7 6 C -8 -4 -3 -12 -1 -14 C 0 -12 2 -4 0 6 Z" fill="url(#pinkSkin)"/>
+      <!-- Right Paw -->
+      <path d="M 7 6 C 8 -4 3 -12 1 -14 C 0 -12 -2 -4 0 6 Z" fill="url(#pinkSkin)"/>
+      <!-- Tiny Palm details & claw tips -->
+      <line x1="0" y1="-14" x2="0" y2="4" stroke="#e11d48" stroke-width="1.2"/>
+      <circle cx="0" cy="-14" r="1.2" fill="#ffffff"/>
+      <circle cx="-2.5" cy="-10" r="1" fill="#ffffff" opacity="0.8"/>
+      <circle cx="2.5" cy="-10" r="1" fill="#ffffff" opacity="0.8"/>
+    </g>
+  </g>
+</svg>

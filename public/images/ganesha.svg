@@ -1,0 +1,324 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Background glow / aura -->
+    <radialGradient id="divineGlow" cx="50%" cy="45%" r="50%">
+      <stop offset="0%" stop-color="#fef08a" stop-opacity="0.8"/>
+      <stop offset="50%" stop-color="#f59e0b" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#f59e0b" stop-opacity="0"/>
+    </radialGradient>
+
+    <!-- Gold Gradients -->
+    <linearGradient id="goldCrown" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fef08a"/>
+      <stop offset="35%" stop-color="#facc15"/>
+      <stop offset="70%" stop-color="#eab308"/>
+      <stop offset="100%" stop-color="#a16207"/>
+    </linearGradient>
+
+    <linearGradient id="goldTrim" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#ca8a04"/>
+      <stop offset="50%" stop-color="#fef08a"/>
+      <stop offset="100%" stop-color="#ca8a04"/>
+    </linearGradient>
+
+    <!-- Divine Skin Gradients -->
+    <radialGradient id="skinGrad" cx="45%" cy="40%" r="55%">
+      <stop offset="0%" stop-color="#ffedd5"/>
+      <stop offset="45%" stop-color="#fed7aa"/>
+      <stop offset="85%" stop-color="#fba872"/>
+      <stop offset="100%" stop-color="#ea580c"/>
+    </radialGradient>
+
+    <radialGradient id="earPink" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#fda4af"/>
+      <stop offset="60%" stop-color="#fb7185"/>
+      <stop offset="100%" stop-color="#e11d48" stop-opacity="0.4"/>
+    </radialGradient>
+
+    <!-- Clothing Gradients -->
+    <linearGradient id="dhotiPeach" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#fed7aa"/>
+      <stop offset="30%" stop-color="#fb923c"/>
+      <stop offset="75%" stop-color="#ea580c"/>
+      <stop offset="100%" stop-color="#c2410c"/>
+    </linearGradient>
+
+    <linearGradient id="shawlMagenta" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="40%" stop-color="#be185d"/>
+      <stop offset="80%" stop-color="#831843"/>
+      <stop offset="100%" stop-color="#500724"/>
+    </linearGradient>
+
+    <linearGradient id="bolsterGreen" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#4ade80"/>
+      <stop offset="30%" stop-color="#22c55e"/>
+      <stop offset="75%" stop-color="#15803d"/>
+      <stop offset="100%" stop-color="#14532d"/>
+    </linearGradient>
+
+    <!-- Wood Chowki Pedestal -->
+    <linearGradient id="pedestalWood" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#78350f"/>
+      <stop offset="40%" stop-color="#451a03"/>
+      <stop offset="80%" stop-color="#270e02"/>
+      <stop offset="100%" stop-color="#180701"/>
+    </linearGradient>
+
+    <!-- Silver Weapons -->
+    <linearGradient id="silverWeapon" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="40%" stop-color="#cbd5e1"/>
+      <stop offset="80%" stop-color="#64748b"/>
+      <stop offset="100%" stop-color="#334155"/>
+    </linearGradient>
+
+    <!-- Drop Shadows -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background Halo Glow -->
+  <circle cx="250" cy="225" r="190" fill="url(#divineGlow)"/>
+
+  <!-- Ornate Carved Wooden Chowki Pedestal (As in photo) -->
+  <g id="pedestal" filter="url(#shadow)">
+    <!-- Main base block -->
+    <path d="M 60 410 L 440 410 L 465 465 L 35 465 Z" fill="url(#pedestalWood)"/>
+    <rect x="45" y="445" width="410" height="20" rx="3" fill="#1c0a02"/>
+    <line x1="50" y1="420" x2="450" y2="420" stroke="#b45309" stroke-width="3"/>
+    <line x1="40" y1="445" x2="460" y2="445" stroke="#92400e" stroke-width="2"/>
+    <!-- Intricate carvings on platform -->
+    <path d="M 120 440 Q 130 432 140 440 Q 150 432 160 440 Q 170 432 180 440" fill="none" stroke="#d97706" stroke-width="2.5"/>
+    <path d="M 320 440 Q 330 432 340 440 Q 350 432 360 440 Q 370 432 380 440" fill="none" stroke="#d97706" stroke-width="2.5"/>
+    <!-- Small Mushak sculpted in devotion on front of pedestal -->
+    <ellipse cx="250" cy="435" rx="14" ry="7" fill="#475569"/>
+    <ellipse cx="258" cy="433" rx="6" ry="4" fill="#334155"/>
+    <path d="M 236 437 Q 242 433 246 435" stroke="#334155" stroke-width="2" fill="none"/>
+  </g>
+
+  <!-- Green Bolster Cushions (Masnad/Takiya on both sides as in photo) -->
+  <g id="bolsters" filter="url(#shadow)">
+    <!-- Left Bolster -->
+    <g transform="rotate(-15 110 330)">
+      <ellipse cx="110" cy="330" rx="36" ry="58" fill="url(#bolsterGreen)"/>
+      <ellipse cx="110" cy="285" rx="28" ry="12" fill="#166534"/>
+      <circle cx="110" cy="285" r="5" fill="#facc15"/>
+      <path d="M 80 330 Q 110 320 140 330" stroke="#fef08a" stroke-width="2" fill="none"/>
+    </g>
+    <!-- Right Bolster -->
+    <g transform="rotate(15 390 330)">
+      <ellipse cx="390" cy="330" rx="36" ry="58" fill="url(#bolsterGreen)"/>
+      <ellipse cx="390" cy="285" rx="28" ry="12" fill="#166534"/>
+      <circle cx="390" cy="285" r="5" fill="#facc15"/>
+      <path d="M 360 330 Q 390 320 420 330" stroke="#fef08a" stroke-width="2" fill="none"/>
+    </g>
+  </g>
+
+  <!-- Saffron/Peach Silk Dhoti (Pitambar) wrapped on crossed legs -->
+  <g id="dhoti" filter="url(#shadow)">
+    <!-- Base folded legs mass -->
+    <path d="M 100 375 C 100 320, 160 310, 250 315 C 340 310, 400 320, 400 375 C 390 415, 330 420, 250 420 C 170 420, 110 415, 100 375 Z" fill="url(#dhotiPeach)"/>
+    <!-- Fold creases and pleats -->
+    <path d="M 170 340 Q 210 380 250 415" stroke="#c2410c" stroke-width="3" fill="none"/>
+    <path d="M 330 340 Q 290 380 250 415" stroke="#c2410c" stroke-width="3" fill="none"/>
+    <path d="M 125 375 Q 165 395 210 405" stroke="#ea580c" stroke-width="2.5" fill="none"/>
+    <path d="M 375 375 Q 335 395 290 405" stroke="#ea580c" stroke-width="2.5" fill="none"/>
+    <!-- Gold Zari Border on Dhoti hem -->
+    <path d="M 140 415 Q 250 425 360 415" stroke="url(#goldTrim)" stroke-width="5" fill="none"/>
+    <!-- Right Lotus Foot pointing outward with pink sole -->
+    <ellipse cx="360" cy="385" rx="24" ry="14" fill="#fed7aa" transform="rotate(-15 360 385)"/>
+    <circle cx="376" cy="380" r="4.5" fill="#fda4af"/>
+    <circle cx="370" cy="377" r="3.5" fill="#fda4af"/>
+    <circle cx="363" cy="376" r="3" fill="#fda4af"/>
+    <circle cx="356" cy="376" r="2.8" fill="#fda4af"/>
+    <circle cx="350" cy="378" r="2.5" fill="#fda4af"/>
+    <!-- Blue Anklet ring -->
+    <ellipse cx="340" cy="376" rx="5" ry="12" fill="#1d4ed8"/>
+  </g>
+
+  <!-- Deep Magenta/Crimson Silk Uttariya (Shawl) draped over left shoulder -->
+  <g id="shawl">
+    <path d="M 160 210 Q 145 250 148 310 Q 155 350 170 380 L 195 375 Q 175 320 180 260 Q 185 220 190 200 Z" fill="url(#shawlMagenta)" filter="url(#shadow)"/>
+    <path d="M 152 220 Q 140 270 145 320 Q 152 360 172 380" stroke="#facc15" stroke-width="3" fill="none"/>
+  </g>
+
+  <!-- Divine Plump Torso & Sacred Janeu (Lambodara) -->
+  <g id="torso" filter="url(#shadow)">
+    <!-- Round Divine Belly -->
+    <ellipse cx="250" cy="275" rx="72" ry="60" fill="url(#skinGrad)"/>
+    <!-- Delicate Navel -->
+    <circle cx="250" cy="298" r="4.5" fill="#c2410c" opacity="0.6"/>
+    <!-- Red Chandan flame strokes on sides of stomach (as in photo) -->
+    <path d="M 215 292 Q 225 298 235 292 Q 225 306 215 292 Z" fill="#dc2626"/>
+    <path d="M 285 292 Q 275 298 265 292 Q 275 306 285 292 Z" fill="#dc2626"/>
+    <!-- Sacred Janeu Thread across chest -->
+    <path d="M 205 210 Q 235 260 280 320" stroke="#ffffff" stroke-width="2" stroke-dasharray="4,2" fill="none"/>
+    <path d="M 206 212 Q 236 262 281 322" stroke="#facc15" stroke-width="1.5" fill="none"/>
+    <!-- Gold Haar (Necklace with sun/floral pendant) -->
+    <path d="M 210 205 Q 250 248 290 205" stroke="url(#goldTrim)" stroke-width="7" fill="none"/>
+    <circle cx="250" cy="232" r="12" fill="url(#goldCrown)"/>
+    <circle cx="250" cy="232" r="5" fill="#dc2626"/>
+  </g>
+
+  <!-- Four Arms & Divine Emblems (Exact photo match) -->
+  <g id="arms">
+    <!-- Upper Right Hand holding Silver Parashu (Axe) -->
+    <g id="armUpperRight">
+      <path d="M 190 205 Q 140 215 130 245" stroke="url(#skinGrad)" stroke-width="24" stroke-linecap="round" fill="none"/>
+      <circle cx="130" cy="245" r="12" fill="url(#skinGrad)"/>
+      <rect x="126" y="240" width="8" height="12" rx="3" fill="url(#goldCrown)"/>
+      <!-- Silver Parashu Axe -->
+      <path d="M 125 210 C 105 200 95 230 115 250 C 95 260 110 280 135 260 Z" fill="url(#silverWeapon)" stroke="#94a3b8" stroke-width="1.5"/>
+    </g>
+
+    <!-- Upper Left Hand holding Silver Ankusha / Pasa -->
+    <g id="armUpperLeft">
+      <path d="M 310 205 Q 360 215 370 245" stroke="url(#skinGrad)" stroke-width="24" stroke-linecap="round" fill="none"/>
+      <circle cx="370" cy="245" r="12" fill="url(#skinGrad)"/>
+      <rect x="366" y="240" width="8" height="12" rx="3" fill="url(#goldCrown)"/>
+      <!-- Silver Lotus/Ankusha Emblem -->
+      <path d="M 375 210 C 395 200 405 230 385 250 C 405 260 390 280 365 260 Z" fill="url(#silverWeapon)" stroke="#94a3b8" stroke-width="1.5"/>
+    </g>
+
+    <!-- Lower Left Hand cupping the Golden Modak -->
+    <g id="armLowerLeft">
+      <path d="M 315 260 Q 360 275 365 295" stroke="url(#skinGrad)" stroke-width="22" stroke-linecap="round" fill="none"/>
+      <!-- Hand cupped open -->
+      <ellipse cx="365" cy="295" rx="14" ry="9" fill="url(#skinGrad)" transform="rotate(-15 365 295)"/>
+      <!-- Gold Bracelet -->
+      <ellipse cx="350" cy="285" rx="5" ry="12" fill="url(#goldCrown)"/>
+      <!-- Golden Modak -->
+      <path d="M 360 292 C 354 290 354 282 363 274 C 365 272 368 272 370 274 C 378 282 378 290 373 292 Z" fill="url(#goldCrown)" stroke="#b45309" stroke-width="1.5"/>
+      <circle cx="366" cy="272" r="2" fill="#ef4444"/>
+    </g>
+
+    <!-- Lower Right Hand in Abhaya Mudra (Blessing gesture with sacred Om/Swastik on palm) -->
+    <g id="armLowerRight">
+      <path d="M 185 260 Q 145 275 140 295" stroke="url(#skinGrad)" stroke-width="22" stroke-linecap="round" fill="none"/>
+      <!-- Gold Bracelet -->
+      <ellipse cx="150" cy="285" rx="5" ry="12" fill="url(#goldCrown)"/>
+      <!-- Palm facing viewer with extended fingers -->
+      <ellipse cx="140" cy="275" rx="15" ry="18" fill="url(#skinGrad)"/>
+      <!-- Fingers pointing upward -->
+      <rect x="130" y="248" width="5.5" height="18" rx="2.5" fill="url(#skinGrad)"/>
+      <rect x="136.5" y="244" width="5.5" height="22" rx="2.5" fill="url(#skinGrad)"/>
+      <rect x="143" y="246" width="5.5" height="20" rx="2.5" fill="url(#skinGrad)"/>
+      <rect x="149.5" y="250" width="5.5" height="16" rx="2.5" fill="url(#skinGrad)"/>
+      <!-- Auspicious Sacred Red Marking on Palm (As in photo) -->
+      <circle cx="141" cy="274" r="6.5" fill="#dc2626"/>
+      <path d="M 141 270 L 141 278 M 137 274 L 145 274" stroke="#ffffff" stroke-width="1.5"/>
+      <!-- Red Alta lines along fingers -->
+      <line x1="133" y1="250" x2="133" y2="256" stroke="#dc2626" stroke-width="1.5"/>
+      <line x1="139" y1="247" x2="139" y2="255" stroke="#dc2626" stroke-width="1.5"/>
+      <line x1="146" y1="249" x2="146" y2="256" stroke="#dc2626" stroke-width="1.5"/>
+    </g>
+  </g>
+
+  <!-- Large Divine Elephant Ears (With delicate pink inner flaps) -->
+  <g id="ears" filter="url(#shadow)">
+    <!-- Right Ear (Viewer's Left) -->
+    <path d="M 215 160 C 130 140 120 225 195 240 Z" fill="url(#skinGrad)"/>
+    <path d="M 205 170 C 145 155 138 215 192 230 Z" fill="url(#earPink)"/>
+
+    <!-- Left Ear (Viewer's Right) -->
+    <path d="M 285 160 C 370 140 380 225 305 240 Z" fill="url(#skinGrad)"/>
+    <path d="M 295 170 C 355 155 362 215 308 230 Z" fill="url(#earPink)"/>
+  </g>
+
+  <!-- Head & Cheeks -->
+  <g id="head" filter="url(#shadow)">
+    <ellipse cx="250" cy="175" rx="55" ry="46" fill="url(#skinGrad)"/>
+    <!-- Chubby Cheeks -->
+    <circle cx="215" cy="190" r="18" fill="url(#earPink)" opacity="0.35"/>
+    <circle cx="285" cy="190" r="18" fill="url(#earPink)" opacity="0.35"/>
+  </g>
+
+  <!-- Tusks: Right Tusk whole, Left Tusk broken (Ekadanta) as in photo -->
+  <g id="tusks">
+    <!-- Broken Left Tusk (Ekadanta) -->
+    <path d="M 228 212 L 210 220 L 213 226 L 230 216 Z" fill="#fffbeb" stroke="#fef08a" stroke-width="1"/>
+    <!-- Gold band at broken edge -->
+    <line x1="210" y1="220" x2="213" y2="226" stroke="#ca8a04" stroke-width="2.5"/>
+
+    <!-- Whole Right Tusk -->
+    <path d="M 272 212 Q 284 216 295 212 Q 285 220 270 216 Z" fill="#ffffff" stroke="#cbd5e1" stroke-width="1"/>
+  </g>
+
+  <!-- Graceful Curled Trunk (Ganda-sthal) curving to the left holding modak -->
+  <g id="trunk" filter="url(#shadow)">
+    <path d="M 240 185 Q 242 225 250 250 Q 256 270 262 280 Q 255 292 240 286 Q 230 275 235 255 Q 238 225 240 185 Z" fill="url(#skinGrad)"/>
+    <!-- Delicate Trunk Wrinkles -->
+    <path d="M 238 215 Q 243 218 248 215" stroke="#ea580c" stroke-width="1.5" fill="none"/>
+    <path d="M 239 230 Q 245 233 251 230" stroke="#ea580c" stroke-width="1.5" fill="none"/>
+    <path d="M 242 245 Q 248 248 254 245" stroke="#ea580c" stroke-width="1.5" fill="none"/>
+    <path d="M 246 260 Q 252 263 258 260" stroke="#ea580c" stroke-width="1.5" fill="none"/>
+    <!-- Red auspicious vermilion line & bindi dots along center of trunk (as in photo) -->
+    <line x1="243" y1="188" x2="252" y2="272" stroke="#dc2626" stroke-width="2.5" stroke-dasharray="1,4" stroke-linecap="round"/>
+  </g>
+
+  <!-- Serene Divine Eyes & Sacred Forehead Tilak -->
+  <g id="faceFeatures">
+    <!-- Divine Eyes -->
+    <!-- Left Eye -->
+    <g transform="translate(222 170)">
+      <ellipse cx="0" cy="0" rx="8" ry="4.5" fill="#ffffff"/>
+      <circle cx="0.5" cy="0" r="3.2" fill="#1e1b4b"/>
+      <circle cx="-0.8" cy="-1" r="1.2" fill="#ffffff"/>
+      <path d="M -8 -1 Q 0 -6 8 -1" stroke="#451a03" stroke-width="2" fill="none"/>
+    </g>
+    <!-- Right Eye -->
+    <g transform="translate(278 170)">
+      <ellipse cx="0" cy="0" rx="8" ry="4.5" fill="#ffffff"/>
+      <circle cx="-0.5" cy="0" r="3.2" fill="#1e1b4b"/>
+      <circle cx="-1.8" cy="-1" r="1.2" fill="#ffffff"/>
+      <path d="M -8 -1 Q 0 -6 8 -1" stroke="#451a03" stroke-width="2" fill="none"/>
+    </g>
+
+    <!-- Sacred White Chandan Tripundra + Red Vermilion Trishul Tilak on Forehead -->
+    <g id="tilak" transform="translate(250 152)">
+      <!-- Three White Horizontal Arcs (Tripundra) -->
+      <path d="M -16 -4 Q 0 -2 16 -4" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <path d="M -18 -8 Q 0 -6 18 -8" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <path d="M -16 -12 Q 0 -10 16 -12" stroke="#ffffff" stroke-width="2" fill="none"/>
+      <!-- Red Sacred Trishul (Trident) Emblem -->
+      <path d="M 0 -16 L 0 6" stroke="#dc2626" stroke-width="3" stroke-linecap="round"/>
+      <path d="M -7 -14 Q -6 -7 0 -2 Q 6 -7 7 -14" stroke="#dc2626" stroke-width="2.5" fill="none"/>
+      <circle cx="0" cy="7" r="2" fill="#eab308"/>
+    </g>
+  </g>
+
+  <!-- Ornate Towering Golden Mukut (Crown) with Ruby Jewels (Exact photo match) -->
+  <g id="crown" filter="url(#shadow)">
+    <!-- Base Crown Band across forehead -->
+    <path d="M 205 145 Q 250 135 295 145 L 305 130 Q 250 118 195 130 Z" fill="url(#goldCrown)" stroke="#a16207" stroke-width="1.5"/>
+    <line x1="200" y1="138" x2="300" y2="138" stroke="#ffffff" stroke-width="1" opacity="0.6"/>
+
+    <!-- Pearl/Jewel Row along base -->
+    <circle cx="210" cy="138" r="3" fill="#dc2626"/>
+    <circle cx="223" cy="136" r="3" fill="#ffffff"/>
+    <circle cx="236" cy="134" r="3" fill="#15803d"/>
+    <circle cx="250" cy="133" r="4" fill="#dc2626"/>
+    <circle cx="264" cy="134" r="3" fill="#15803d"/>
+    <circle cx="277" cy="136" r="3" fill="#ffffff"/>
+    <circle cx="290" cy="138" r="3" fill="#dc2626"/>
+
+    <!-- Grand Sculpted Golden Crown Body with Multi-Tier Arch -->
+    <path d="M 200 130 C 190 100, 210 75, 250 60 C 290 75, 310 100, 300 130 Z" fill="url(#goldCrown)" stroke="#ca8a04" stroke-width="2"/>
+    <!-- Inner Filigree Arches -->
+    <path d="M 215 125 C 210 95, 230 80, 250 72 C 270 80, 290 95, 285 125 Z" fill="#eab308" stroke="#a16207" stroke-width="1.5"/>
+
+    <!-- Central Majestic Red Teardrop Ruby Jewel -->
+    <path d="M 250 82 C 243 92 243 102 250 106 C 257 102 257 92 250 82 Z" fill="#dc2626" stroke="#fef08a" stroke-width="1.5"/>
+    <circle cx="249" cy="94" r="2" fill="#ffffff"/>
+
+    <!-- Radiating Golden Spire (Kalash Finial) on crown apex -->
+    <path d="M 246 62 L 250 42 L 254 62 Z" fill="#fef08a" stroke="#ca8a04" stroke-width="1.5"/>
+    <circle cx="250" cy="40" r="4.5" fill="#facc15"/>
+    <circle cx="250" cy="40" r="2" fill="#ffffff"/>
+
+    <!-- Radiating Golden Halo Rays behind Crown -->
+    <path d="M 175 110 Q 250 45 325 110" stroke="url(#goldTrim)" stroke-width="4" stroke-linecap="round" fill="none" opacity="0.8"/>
+  </g>
+</svg>
