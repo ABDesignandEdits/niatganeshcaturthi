@@ -20,7 +20,7 @@ import {
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { soundManager } from '../audio/soundManager';
-import { FestivalScene3D } from './three3d/FestivalScene3D';
+import { GANESHA_BACKGROUND_IMAGE_URL } from './three3d/PandalEnvironment';
 import { 
   ModakIcon, 
   DiyaIcon, 
@@ -50,6 +50,7 @@ interface MainMenuProps {
   onPlayDurvaPuja: () => void;
   onPlayPandalBuilder: () => void;
   onPlayGaneshaPuzzle: () => void;
+  onOpenPandalViewer: () => void;
   onOpenLeaderboard: () => void;
   onOpenHowToPlay: () => void;
   onOpenSettings: () => void;
@@ -74,6 +75,7 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   onPlayDurvaPuja,
   onPlayPandalBuilder,
   onPlayGaneshaPuzzle,
+  onOpenPandalViewer,
   onOpenLeaderboard,
   onOpenHowToPlay,
   onOpenSettings,
@@ -366,17 +368,20 @@ export const MainMenu: React.FC<MainMenuProps> = ({
   const blurProgress = Math.min(scrollY / 500, 1);
 
   return (
-    <div className="relative w-full h-screen h-[100dvh] overflow-hidden flex flex-col bg-[#060308] text-amber-50 select-none">
-      {/* 1. Fixed 3D WebGL Background Environment */}
-      <div className="fixed inset-0 z-0 pointer-events-auto">
-        <FestivalScene3D mode="hero" showMushak={true} />
-      </div>
-
-      {/* Dynamic Defocus Blur Overlay behind options/content */}
+    <div 
+      className="relative w-full h-screen h-[100dvh] overflow-hidden flex flex-col bg-[#060308] text-amber-50 select-none bg-cover bg-center bg-no-repeat"
+      style={{
+        backgroundImage: `url("${GANESHA_BACKGROUND_IMAGE_URL}")`,
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+      }}
+    >
+      {/* Dynamic Defocus Blur Overlay behind options/content when scrolling */}
       <div 
         className="fixed inset-0 z-0 pointer-events-none transition-all duration-300"
         style={{
-          backgroundColor: `rgba(6, 3, 8, ${0.15 + blurProgress * 0.65})`,
+          backgroundColor: `rgba(6, 3, 8, ${blurProgress * 0.7})`,
           backdropFilter: `blur(${blurProgress * 16}px)`,
           WebkitBackdropFilter: `blur(${blurProgress * 16}px)`,
         }}
@@ -406,6 +411,22 @@ export const MainMenu: React.FC<MainMenuProps> = ({
         </div>
 
         <div className="flex items-center gap-2">
+          {/* 3D Pandal Darshan Quick Launcher */}
+          <button
+            onClick={() => {
+              soundManager.userInteracted();
+              soundManager.playTempleBell();
+              onOpenPandalViewer();
+            }}
+            aria-label="Open 3D Pandal Walkthrough"
+            className="apple-liquid-glass px-2.5 sm:px-3 py-1.5 rounded-full border border-amber-400/40 text-amber-200 hover:text-amber-100 hover:border-amber-300 transition-all flex items-center gap-1.5 cursor-pointer active:scale-95 shadow-sm"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-amber-300 animate-spin-slow" />
+            <span className="font-cinzel text-[10px] sm:text-xs font-bold uppercase tracking-wider text-amber-200">
+              3D Darshan
+            </span>
+          </button>
+
           {/* Audio Sound Toggle */}
           <button
             onClick={handleToggleSound}
@@ -468,6 +489,23 @@ export const MainMenu: React.FC<MainMenuProps> = ({
             >
               <Play className="w-5 h-5 fill-current text-amber-200" />
               <span>ENTER PILGRIMAGE (PLAY RUNNER)</span>
+            </button>
+
+            {/* High-End Interactive 3D Pandal Walkthrough & Stage Viewer */}
+            <button
+              id="open-3d-pandal-btn"
+              onClick={() => {
+                soundManager.userInteracted();
+                soundManager.playTempleBell();
+                onOpenPandalViewer();
+              }}
+              className="apple-liquid-glass w-full min-h-[48px] sm:min-h-[52px] px-5 py-3 rounded-2xl font-cinzel font-bold text-xs sm:text-sm tracking-wider flex items-center justify-center gap-2.5 border border-amber-400/50 bg-gradient-to-r from-amber-500/15 via-amber-400/20 to-yellow-500/15 text-amber-100 hover:border-amber-300 hover:bg-amber-500/25 transition-all shadow-xl shadow-amber-950/40 cursor-pointer active:scale-[0.98] group"
+            >
+              <Sparkles className="w-4 h-4 text-amber-300 group-hover:rotate-12 transition-transform" />
+              <span>EXPLORE 3D PANDAL (STAGE VIEWER)</span>
+              <span className="text-[9px] sm:text-[10px] px-2 py-0.5 rounded-full bg-amber-400/20 border border-amber-300/40 font-outfit uppercase tracking-wider text-amber-200">
+                3D Walkthrough
+              </span>
             </button>
 
             {/* Secondary Action: Smooth Scroll to 14 Games Pavilion */}

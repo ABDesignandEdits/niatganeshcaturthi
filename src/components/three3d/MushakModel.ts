@@ -11,6 +11,7 @@ export interface Mushak3DInstance {
 export async function loadMushak3DModel(): Promise<Mushak3DInstance> {
   const loader = new GLTFLoader();
   const possiblePaths = [
+    '/public/models/mushak.glb',
     '/models/mushak.glb',
     '/assets/mushak.glb',
     '/mushak.glb',

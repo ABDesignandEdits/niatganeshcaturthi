@@ -35,6 +35,7 @@ import { DiyaMandalaGame } from './components/games/DiyaMandalaGame';
 import { DurvaPujaGame } from './components/games/DurvaPujaGame';
 import { PandalBuilderGame } from './components/games/PandalBuilderGame';
 import { GaneshaPuzzleGame } from './components/games/GaneshaPuzzleGame';
+import { PandalViewer3D } from './components/three3d/PandalViewer3D';
 
 export default function App() {
   const [screen, setScreen] = useState<GameScreen>('menu');
@@ -177,6 +178,7 @@ export default function App() {
           onPlayDurvaPuja={() => setScreen('game_durva_puja')}
           onPlayPandalBuilder={() => setScreen('game_pandal_builder')}
           onPlayGaneshaPuzzle={() => setScreen('game_ganesha_puzzle')}
+          onOpenPandalViewer={() => setScreen('pandal_viewer')}
           onOpenLeaderboard={() => setScreen('leaderboard')}
           onOpenHowToPlay={() => setScreen('tutorial')}
           onOpenSettings={() => setScreen('settings')}
@@ -239,6 +241,11 @@ export default function App() {
 
       {screen === 'game_ganesha_puzzle' && (
         <GaneshaPuzzleGame onBack={() => setScreen('menu')} />
+      )}
+
+      {/* 3D Pandal Walkthrough & Stage Viewer */}
+      {screen === 'pandal_viewer' && (
+        <PandalViewer3D onClose={handleMainMenu} />
       )}
 
       {/* 2. Active Game Screen */}

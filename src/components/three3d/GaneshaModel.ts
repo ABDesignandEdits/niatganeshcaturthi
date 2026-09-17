@@ -15,6 +15,7 @@ export interface ModelLoadResult {
 export async function loadGanesha3DModel(): Promise<ModelLoadResult> {
   const loader = new GLTFLoader();
   const possiblePaths = [
+    '/public/models/ganesha.glb',
     '/models/ganesha.glb',
     '/assets/ganesha.glb',
     '/ganesha.glb',

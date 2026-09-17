@@ -42,7 +42,8 @@ export type GameScreen =
   | 'game_diya'
   | 'game_durva'
   | 'game_pandal'
-  | 'game_puzzle';
+  | 'game_puzzle'
+  | 'pandal_viewer';
 
 export type CollectibleType = 
   | 'modak' 
