@@ -13,6 +13,14 @@ Players must help Mushak collect sacred offerings (Modaks, Durva grass, Marigold
 
 ---
 
+## 🧠 Makers of the Game
+* **Makers & Developer**: Anirban & Team AB Devs
+* **Tools Used**: Vercel AI, Google Cloud, Google Deepmind, Lovable
+* **Creation & Playground Game Engine**: Unreal Engine, Unity Studio, RenderWare
+* **Particle Simulations, Image processing, Render Processing**: NVIDIA CUDA
+
+
+---
 ## 🪔 Contest Theme: Connection to Vinayaka Chaturthi
 
 **Vinayaka Chaturthi** commemorates the arrival of Lord Ganesha to earth from Kailash Parvat. Ganesha represents wisdom, auspicious beginnings, and the removal of obstacles (*Vighnaharta*).
