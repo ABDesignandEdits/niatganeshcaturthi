@@ -16,6 +16,7 @@ Players must help Mushak collect sacred offerings (Modaks, Durva grass, Marigold
 ## 🧠 Makers of the Game
 * **Makers & Developer**: Anirban & Team AB Devs
 * **Tools Used**: Vercel AI, Google Cloud, Google Deepmind, Lovable
+* **3D Render**: Blender 3D, Sketchfab Enterprise,  Cinema 4D
 * **Creation & Playground Game Engine**: Unreal Engine, Unity Studio, RenderWare
 * **Particle Simulations, Image processing, Render Processing**: NVIDIA CUDA
 
